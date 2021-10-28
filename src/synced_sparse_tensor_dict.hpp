@@ -8,7 +8,6 @@ public:
   synced_sparse_tensor_dict(torch::Tensor mask_,
                             torch::IntArrayRef tensor_shape_,
                             const std::string &storage_dir_);
-  ~synced_sparse_tensor_dict();
   void emplace(const std::string &key, const torch::Tensor &value);
   std::optional<torch::Tensor> get(const std::string &key);
 
