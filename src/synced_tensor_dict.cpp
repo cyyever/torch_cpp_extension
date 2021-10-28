@@ -1,4 +1,5 @@
 #include "synced_tensor_dict.hpp"
+#include <torch/csrc/api/include/torch/serialize.h>
 
 #include <stdexcept>
 
@@ -31,11 +32,12 @@ void synced_tensor_dict::clear_data() {
 torch::Tensor synced_tensor_dict::load_data_from_disk(const std::string &key) {
   torch::Tensor value;
   torch::load(value, get_tensor_file_path(key).string());
+  return value;
 }
 void synced_tensor_dict::save_data(const std::string &key, torch::Tensor data) {
   auto path = get_tensor_file_path(key);
   std::filesystem::remove(path);
-  torch::save(value, path.string());
+  torch::save(data, path.string());
 }
 void synced_tensor_dict::erase_data(const std::string &key) {
   std::filesystem::remove(get_tensor_file_path(key).string());
