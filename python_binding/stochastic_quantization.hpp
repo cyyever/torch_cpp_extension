@@ -12,6 +12,5 @@
 namespace py = pybind11;
 inline void define_torch_quantization_extension(py::module_ &m) {
   auto sub_m = m.def_submodule("torch", "Contains pytorch extension");
-  sub_m.def("stochastic_quantization",
-            &cyy::pytorch::stochastic_quantization);
+  sub_m.def("stochastic_quantization", &cyy::pytorch::stochastic_quantization);
 }

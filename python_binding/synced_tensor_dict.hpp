@@ -13,8 +13,7 @@
 namespace py = pybind11;
 inline void define_torch_data_structure_extension(py::module_ &m) {
   using synced_tensor_dict = cyy::pytorch::synced_tensor_dict;
-  using synced_sparse_tensor_dict =
-      cyy::pytorch::synced_sparse_tensor_dict;
+  using synced_sparse_tensor_dict = cyy::pytorch::synced_sparse_tensor_dict;
   auto sub_m = m.def_submodule("data_structure", "Contains data structures");
   py::class_<synced_tensor_dict>(sub_m, "SyncedTensorDict")
       .def(py::init<const std::string &>())
