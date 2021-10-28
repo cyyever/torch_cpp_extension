@@ -8,8 +8,8 @@
 #include <pybind11/pybind11.h>
 #include <torch/extension.h>
 
-#include "torch/synced_sparse_tensor_dict.hpp"
-#include "torch/synced_tensor_dict.hpp"
+#include "synced_sparse_tensor_dict.hpp"
+#include "synced_tensor_dict.hpp"
 namespace py = pybind11;
 inline void define_torch_data_structure_extension(py::module_ &m) {
   using synced_tensor_dict = cyy::naive_lib::pytorch::synced_tensor_dict;
