@@ -2,7 +2,7 @@
 #include <ATen/TensorIterator.h>
 #include <ATen/native/cpu/Loops.h>
 
-namespace cyy::naive_lib::pytorch {
+namespace cyy::pytorch {
 
   void stochastic_quantization_cpu(at::Tensor &slot_ret, const at::Tensor &src,
                                    uint64_t quantization_level) {
@@ -14,7 +14,7 @@ namespace cyy::naive_lib::pytorch {
 
     at::native::cpu_kernel(
         iter, [quantization_level](const float src_val) -> float {
-          uint64_t slot = static_cast<uint64_t>(src_val * quantization_level);
+          auto slot = static_cast<uint64_t>(src_val * quantization_level);
           return slot;
         });
   }

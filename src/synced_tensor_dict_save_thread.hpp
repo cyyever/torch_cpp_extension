@@ -7,7 +7,7 @@
 #include "log/log.hpp"
 #include "synced_tensor_dict.hpp"
 #include "util/time.hpp"
-namespace cyy::naive_lib::pytorch {
+namespace cyy::pytorch {
 
   class synced_tensor_dict::save_thread final
       : public cyy::naive_lib::runnable {

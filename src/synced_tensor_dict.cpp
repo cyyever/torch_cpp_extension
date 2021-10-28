@@ -9,7 +9,7 @@
 #include "synced_tensor_dict_fetch_thread.hpp"
 #include "synced_tensor_dict_save_thread.hpp"
 #include "util/runnable.hpp"
-namespace cyy::naive_lib::pytorch {
+namespace cyy::pytorch {
 
   synced_tensor_dict::synced_tensor_dict(const std::string &storage_dir_)
       : storage_dir(storage_dir_) {

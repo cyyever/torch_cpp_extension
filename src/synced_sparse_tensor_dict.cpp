@@ -4,7 +4,7 @@
 
 #include "log/log.hpp"
 
-namespace cyy::naive_lib::pytorch {
+namespace cyy::pytorch {
 
   synced_sparse_tensor_dict::synced_sparse_tensor_dict(
       torch::Tensor mask_, torch::IntArrayRef tensor_shape_,

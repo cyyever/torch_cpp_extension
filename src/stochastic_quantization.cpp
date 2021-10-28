@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 
-namespace cyy::naive_lib::pytorch {
+namespace cyy::pytorch {
 
   torch::Tensor stochastic_quantization(torch::Tensor normalized_abs_tensor,
                                         uint64_t quantization_level) {

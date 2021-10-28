@@ -10,7 +10,7 @@
 #include <cyy/algorithm/dict/ordered_dict.hpp>
 #include <cyy/algorithm/thread_safe_container.hpp>
 
-namespace cyy::naive_lib::pytorch {
+namespace cyy::pytorch {
   class synced_tensor_dict {
   public:
     explicit synced_tensor_dict(const std::string &storage_dir_);

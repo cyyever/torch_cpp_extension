@@ -2,7 +2,7 @@
 
 #include <torch/types.h>
 
-namespace cyy::naive_lib::pytorch {
+namespace cyy::pytorch {
   torch::Tensor stochastic_quantization(torch::Tensor normalized_abs_tensor,
                                         uint64_t quantization_level);
   void stochastic_quantization_cpu(at::Tensor &slot_tensor,
@@ -13,4 +13,4 @@ namespace cyy::naive_lib::pytorch {
                                    const torch::Tensor &normalized_abs_tensor,
                                    uint64_t quantization_level);
 #endif
-} // namespace cyy::naive_lib::pytorch
+} 
