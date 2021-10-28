@@ -8,9 +8,9 @@
 #include <chrono>
 #include <torch/serialize.h>
 
-#include "log/log.hpp"
-#include "torch/synced_tensor_dict.hpp"
-#include "util/time.hpp"
+#include <cyy/naive_lib/util/time.hpp>
+#include <cyy/naive_lib/log/log.hpp>
+#include "src/synced_tensor_dict.hpp"
 int main(int argc, char **argv) {
   cyy::naive_lib::pytorch::synced_tensor_dict dict("tensor_dir_profiling");
 

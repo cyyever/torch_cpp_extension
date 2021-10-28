@@ -10,7 +10,7 @@
 
 #include <torch/serialize.h>
 
-#include "util/file.hpp"
+#include <cyy/naive_lib/util/file.hpp>
 
 uint64_t now_ms() {
   return static_cast<uint64_t>(

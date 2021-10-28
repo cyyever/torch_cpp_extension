@@ -8,7 +8,7 @@
 
 #include <doctest/doctest.h>
 
-#include "torch/synced_tensor_dict.hpp"
+#include "synced_tensor_dict.hpp"
 
 TEST_CASE("synced_tensor_dict") {
   cyy::naive_lib::pytorch::synced_tensor_dict dict("tensor_dir");

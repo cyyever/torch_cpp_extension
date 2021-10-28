@@ -4,11 +4,9 @@
  * \brief 测试container相关函数
  * \author cyy
  */
-#include <thread>
-
 #include <doctest/doctest.h>
 
-#include "torch/synced_sparse_tensor_dict.hpp"
+#include "synced_sparse_tensor_dict.hpp"
 
 TEST_CASE("synced_sparse_tensor_dict") {
   auto sparse_tensor = torch::eye(3);
