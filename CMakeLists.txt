@@ -4,7 +4,7 @@ project(CyyTorchExtensionLib LANGUAGES CXX)
 
 include(cmake/all.cmake)
 
-find_package(Python3 REQUIRED)
+find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
 if(Python3_FOUND)
   execute_process(
     COMMAND ${Python3_EXECUTABLE} -c "import torch ; print(torch.__path__[0])"
