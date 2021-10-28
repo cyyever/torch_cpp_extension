@@ -39,7 +39,7 @@ find_package(spdlog REQUIRED)
 
 add_library(CyyTorchExtensionLib ${SOURCE})
 target_compile_definitions(CyyTorchExtensionLib PRIVATE HAS_CUDA=${HAS_CUDA})
-target_link_libraries(CyyTorchExtensionLib PRIVATE CyyAlgorithmLib)
+# target_link_libraries(CyyTorchExtensionLib PRIVATE CyyAlgorithmLib)
 target_link_libraries(CyyTorchExtensionLib PRIVATE CyyNaiveLib::log)
 target_compile_definitions(CyyTorchExtensionLib
                            PUBLIC _HAS_FEATURES_REMOVED_IN_CXX20=1)
