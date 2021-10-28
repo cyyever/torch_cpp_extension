@@ -34,10 +34,10 @@ torch::Tensor synced_tensor_dict::load_data_from_disk(const std::string &key) {
   torch::load(value, get_tensor_file_path(key).string());
   return value;
 }
-void synced_tensor_dict::save_data(const std::string &key, torch::Tensor data) {
+void synced_tensor_dict::save_data(const std::string &key, torch::Tensor value) {
   auto path = get_tensor_file_path(key);
   std::filesystem::remove(path);
-  torch::save(data, path.string());
+  torch::save(value, path.string());
 }
 void synced_tensor_dict::erase_data(const std::string &key) {
   std::filesystem::remove(get_tensor_file_path(key).string());
