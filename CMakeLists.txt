@@ -36,7 +36,8 @@ if(TARGET torch_cuda)
 endif()
 
 find_package(Boost REQUIRED)
-find_package(CyyNaiveLib)
+find_package(CyyNaiveLib REQUIRED)
+find_package(spdlog REQUIRED)
 
 add_library(CyyTorchExtensionLib ${SOURCE})
 target_compile_definitions(CyyTorchExtensionLib PRIVATE HAS_CUDA=${HAS_CUDA})
