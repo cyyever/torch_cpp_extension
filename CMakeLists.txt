@@ -55,8 +55,6 @@ if(TARGET torch_cuda)
                                  __CUDA_NO_HALF_CONVERSIONS__)
 endif()
 
-add_library(CyyTorchExtensionLib ${SOURCE})
-
 target_include_directories(
   CyyTorchExtensionLib PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
                               $<INSTALL_INTERFACE:include/cyy/torch>)
