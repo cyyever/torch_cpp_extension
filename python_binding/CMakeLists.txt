@@ -6,6 +6,6 @@ target_link_directories(cyy_naive_cpp_extension PUBLIC ${pytorch_path}/lib)
 target_include_directories(cyy_naive_cpp_extension
   PUBLIC ${pytorch_path}/include)
 target_link_libraries(cyy_naive_cpp_extension PUBLIC torch_python)
-target_link_libraries(cyy_naive_cpp_extension PUBLIC cyy_naive_lib_torch)
+target_link_libraries(cyy_naive_cpp_extension PUBLIC CyyTorchExtensionLib)
 target_compile_definitions(cyy_naive_cpp_extension
   PUBLIC BUILD_TORCH_PYTHON_BINDING)

@@ -1,5 +1,3 @@
-include(${CMAKE_CURRENT_LIST_DIR}/../../cmake/fuzzing.cmake)
-
 find_package(doctest REQUIRED)
 file(GLOB fuzzing_sources ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 
@@ -8,6 +6,6 @@ set(ENV{MAX_FUZZING_TIME} 10)
 foreach(fuzzing_source IN LISTS fuzzing_sources)
   get_filename_component(fuzzing_prog ${fuzzing_source} NAME_WE)
   add_executable(fuzz_${fuzzing_prog} ${fuzzing_source})
-  target_link_libraries(fuzz_${fuzzing_prog} PRIVATE CyyNaiveLib::torch)
+  target_link_libraries(fuzz_${fuzzing_prog} PRIVATE CyyTorchExtensionLib)
   add_fuzzing(TARGET fuzz_${fuzzing_prog})
 endforeach()
