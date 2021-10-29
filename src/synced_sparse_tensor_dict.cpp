@@ -9,7 +9,7 @@ namespace cyy::pytorch {
 
 synced_sparse_tensor_dict::synced_sparse_tensor_dict(
     torch::Tensor mask_, torch::IntArrayRef tensor_shape_,
-    const std::string &storage_dir_)
+    std::filesystem::path storage_dir_)
     : synced_tensor_dict(storage_dir_), mask{std::move(mask_)} {
   if (!mask.is_sparse()) {
     mask = mask.to_sparse();

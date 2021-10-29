@@ -7,7 +7,7 @@ class synced_sparse_tensor_dict : public synced_tensor_dict {
 public:
   synced_sparse_tensor_dict(torch::Tensor mask_,
                             torch::IntArrayRef tensor_shape_,
-                            const std::string &storage_dir_);
+                            std::filesystem::path storage_dir_);
   void emplace(const std::string &key, const torch::Tensor &value);
   std::optional<torch::Tensor> get(const std::string &key);
 
