@@ -12,7 +12,7 @@ TEST_CASE("synced_sparse_tensor_dict") {
   auto sparse_tensor = torch::eye(3);
   auto mask = (sparse_tensor != 0);
 
-  cyy::pytorch::synced_sparse_tensor_dict dict(mask, sparse_tensor.sizes(),std::filesystem::path());
+  cyy::pytorch::synced_sparse_tensor_dict dict(mask, sparse_tensor.sizes(),"tensor_dir");
 
   CHECK_EQ(dict.size(), 0);
 
