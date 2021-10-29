@@ -43,7 +43,7 @@ void tensor_storage_backend::save_data(const std::string &key,
 void tensor_storage_backend::erase_data(const std::string &key) {
   std::filesystem::remove(get_tensor_file_path(key).string());
 }
-synced_tensor_dict::synced_tensor_dict(std::string storage_dir_):cyy::algorithm::cache<torch::Tensor>(std::make_unique<tensor_storage_backend>(storage_dir_)){
+synced_tensor_dict::synced_tensor_dict(std::filesystem::path storage_dir_):cyy::algorithm::cache<torch::Tensor>(std::make_unique<tensor_storage_backend>(storage_dir_)){
 
 }
 
