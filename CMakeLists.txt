@@ -42,7 +42,6 @@ if(HAS_CUDA)
   target_compile_definitions(CyyTorchExtensionLib PUBLIC HAS_CUDA)
 endif()
 target_link_libraries(CyyTorchExtensionLib PUBLIC CyyAlgorithmLib)
-target_link_libraries(CyyTorchExtensionLib PUBLIC CyyNaiveLib::log)
 target_compile_definitions(CyyTorchExtensionLib
                            PUBLIC _HAS_FEATURES_REMOVED_IN_CXX20=1)
 target_link_directories(CyyTorchExtensionLib PUBLIC ${pytorch_path}/lib)
