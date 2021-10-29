@@ -7,6 +7,9 @@ namespace cyy::pytorch {
 
 std::vector<std::string> tensor_storage_backend::load_keys() {
   std::vector<std::string> keys;
+  if(storage_dir.empty()) {
+    return keys;
+  }
   if (std::filesystem::exists(storage_dir)) {
     if (!std::filesystem::is_directory(storage_dir)) {
       throw std::invalid_argument(storage_dir.string() + " is not a directory");
