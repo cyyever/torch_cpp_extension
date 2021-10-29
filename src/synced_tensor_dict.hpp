@@ -32,6 +32,5 @@ public:
 
 private:
   std::recursive_mutex data_mutex;
-  tensor_storage_backend backend;
 };
 } // namespace cyy::pytorch

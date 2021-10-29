@@ -43,6 +43,9 @@ void tensor_storage_backend::save_data(const std::string &key,
 void tensor_storage_backend::erase_data(const std::string &key) {
   std::filesystem::remove(get_tensor_file_path(key).string());
 }
+synced_tensor_dict::synced_tensor_dict(std::string storage_dir_):cyy::algorithm::cache<torch::Tensor>(std::make_unique<tensor_storage_backend>(storage_dir_)){
+
+}
 
 void synced_tensor_dict::set_storage_dir(std::string storage_dir_) {
   if (storage_dir_.empty()) {
@@ -57,7 +60,7 @@ void synced_tensor_dict::set_storage_dir(std::string storage_dir_) {
       throw std::invalid_argument(storage_dir.string() + " is not a directory");
     }
   }
-  backend.storage_dir = storage_dir_;
+  std::dynamic_cast<tensor_storage_backend>(backend)->storage_dir=storage_dir_;
 }
 
 std::string synced_tensor_dict::get_storage_dir() const {
