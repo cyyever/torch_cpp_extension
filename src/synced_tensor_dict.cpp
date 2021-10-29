@@ -53,11 +53,13 @@ void synced_tensor_dict::set_storage_dir(std::filesystem::path storage_dir) {
   }
   std::lock_guard lk(data_mutex);
   this->flush_all();
-  if (!std::filesystem::exists(storage_dir)) {
-    std::filesystem::create_directories(storage_dir);
-  } else {
-    if (!std::filesystem::is_directory(storage_dir)) {
-      throw std::invalid_argument(storage_dir.string() + " is not a directory");
+  if(!storage_dir.empty()) {
+    if (!std::filesystem::exists(storage_dir)) {
+      std::filesystem::create_directories(storage_dir);
+    } else {
+      if (!std::filesystem::is_directory(storage_dir)) {
+        throw std::invalid_argument(storage_dir.string() + " is not a directory");
+      }
     }
   }
   dynamic_cast<tensor_storage_backend&>(*backend).storage_dir=storage_dir;
