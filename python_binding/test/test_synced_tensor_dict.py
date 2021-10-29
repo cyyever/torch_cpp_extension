@@ -1,9 +1,9 @@
 import torch
-import cyy_naive_cpp_extension
+import cyy_torch_cpp_extension
 
 
 def test_synced_tensor_dict():
-    tensor_dict = cyy_naive_cpp_extension.data_structure.SyncedTensorDict("")
+    tensor_dict = cyy_torch_cpp_extension.data_structure.SyncedTensorDict("")
     tensor_dict.set_in_memory_number(10)
     tensor_dict.set_storage_dir("tensor_dict_dir")
     # tensor_dict.set_permanent_storage()

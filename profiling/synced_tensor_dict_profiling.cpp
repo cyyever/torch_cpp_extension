@@ -6,13 +6,12 @@
  */
 
 #include <chrono>
-#include <torch/serialize.h>
 
 #include <cyy/naive_lib/util/time.hpp>
 #include <cyy/naive_lib/log/log.hpp>
 #include "src/synced_tensor_dict.hpp"
 int main(int argc, char **argv) {
-  cyy::naive_lib::pytorch::synced_tensor_dict dict("tensor_dir_profiling");
+  cyy::pytorch::synced_tensor_dict dict("tensor_dir_profiling");
 
   dict.set_in_memory_number(100);
   dict.enable_permanent_storage();

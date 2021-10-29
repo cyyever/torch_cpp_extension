@@ -26,7 +26,7 @@ class CMakeBuild(build_ext):
             extdir += os.path.sep
         os.makedirs(extdir, exist_ok=True)
         cmake_build_dir = os.getenv("cmake_build_dir")
-        for f in glob.glob(os.path.join(cmake_build_dir, "**", "*cyy_naive_cpp_extension*")):
+        for f in glob.glob(os.path.join(cmake_build_dir, "**", "*cyy_torch_cpp_extension*")):
             if not f.endswith(".so"):
                 continue
             shutil.copy(f, extdir)
@@ -35,12 +35,12 @@ class CMakeBuild(build_ext):
 # The information here can also be placed in setup.cfg - better separation of
 # logic and declaration, and simpler if you include description/version in a file.
 setup(
-    name="cyy_naive_cpp_extension",
+    name="cyy_torch_cpp_extension",
     version="0.1",
     author="cyy",
     author_email="cyyever@outlook.com",
     description="Python binding for this C++ lib",
-    url="https://github.com/cyyever/naive_cpp_lib",
+    url="https://github.com/cyyever/torch_cpp_extension",
     ext_modules=[CMakeExtension("cmake_example")],
     cmdclass={"build_ext": CMakeBuild},
     zip_safe=False,

@@ -1,11 +1,11 @@
-import cyy_naive_cpp_extension
+import cyy_torch_cpp_extension
 
 import torch
 
 
 def test_synced_sparse_tensor_dict():
     tensor = torch.eye(3)
-    tensor_dict = cyy_naive_cpp_extension.data_structure.SyncedSparseTensorDict(
+    tensor_dict = cyy_torch_cpp_extension.data_structure.SyncedSparseTensorDict(
         tensor.to_sparse(), tensor.shape, ""
     )
     tensor_dict.set_in_memory_number(10)
