@@ -38,13 +38,15 @@ find_package(CyyAlgorithmLib REQUIRED)
 find_package(spdlog REQUIRED)
 
 add_library(CyyTorchExtensionLib ${SOURCE})
-target_compile_definitions(CyyTorchExtensionLib PRIVATE HAS_CUDA=${HAS_CUDA})
+if(HAS_CUDA)
+	target_compile_definitions(CyyTorchExtensionLib PUBLIC HAS_CUDA)
+endif()
 target_link_libraries(CyyTorchExtensionLib PUBLIC CyyAlgorithmLib)
 target_link_libraries(CyyTorchExtensionLib PUBLIC CyyNaiveLib::log)
 target_compile_definitions(CyyTorchExtensionLib
                            PUBLIC _HAS_FEATURES_REMOVED_IN_CXX20=1)
 target_link_directories(CyyTorchExtensionLib PUBLIC ${pytorch_path}/lib)
-target_link_libraries(CyyTorchExtensionLib PUBLIC ${TORCH_LIBRARIES})
+target_link_libraries(CyyTorchExtensionLib PUBLIC ${TORCH_LIBRARIES} c10 torch_cpu)
 if(TARGET torch_cuda)
   target_link_libraries(CyyTorchExtensionLib PUBLIC torch_cuda)
   target_compile_definitions(
