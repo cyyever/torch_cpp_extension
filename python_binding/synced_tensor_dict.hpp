@@ -66,11 +66,11 @@ inline void define_torch_data_structure_extension(py::module_ &m) {
            py::call_guard<py::gil_scoped_release>())
       .def("clear", &synced_tensor_dict::clear,
            py::call_guard<py::gil_scoped_release>())
-      .def("__copy__", [](const synced_tensor_dict &self) { return self; })
-      .def(
-          "__deepcopy__",
-          [](const synced_tensor_dict &self, py::dict) { return self; },
-          py::arg("memo"))
+      /* .def("__copy__", [](const synced_tensor_dict &self) { return self; }) */
+      /* .def( */
+      /*     "__deepcopy__", */
+      /*     [](const synced_tensor_dict &self, py::dict) { return self; }, */
+      /*     py::arg("memo")) */
       .def("flush_all", &synced_tensor_dict::flush_all,
            "flush all in-memory data to the disk", py::arg("wait") = true,
            py::call_guard<py::gil_scoped_release>())
@@ -81,12 +81,12 @@ inline void define_torch_data_structure_extension(py::module_ &m) {
   py::class_<synced_sparse_tensor_dict, synced_tensor_dict>(
       sub_m, "SyncedSparseTensorDict")
       .def(py::init<torch::Tensor, torch::IntArrayRef, const std::string &>())
-      .def("__copy__",
-           [](const synced_sparse_tensor_dict &self) { return self; })
-      .def(
-          "__deepcopy__",
-          [](const synced_sparse_tensor_dict &self, py::dict) { return self; },
-          py::arg("memo"))
+      /* .def("__copy__", */
+      /*      [](const synced_sparse_tensor_dict &self) { return self; }) */
+      /* .def( */
+      /*     "__deepcopy__", */
+      /*     [](const synced_sparse_tensor_dict &self, py::dict) { return self; }, */
+      /*     py::arg("memo")) */
       .def("__getitem__", &synced_sparse_tensor_dict::get,
            py::call_guard<py::gil_scoped_release>())
       .def("__setitem__", &synced_sparse_tensor_dict::emplace,

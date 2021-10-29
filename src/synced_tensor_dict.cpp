@@ -47,9 +47,9 @@ synced_tensor_dict::synced_tensor_dict(std::string storage_dir_):cyy::algorithm:
 
 }
 
-void synced_tensor_dict::set_storage_dir(std::string storage_dir_) {
-  if (storage_dir_.empty()) {
-    throw std::invalid_argument(storage_dir_ + " is not a directory");
+void synced_tensor_dict::set_storage_dir(std::filesystem::path storage_dir) {
+  if (storage_dir.empty()) {
+    throw std::invalid_argument(storage_dir.string() + " is not a directory");
   }
   std::lock_guard lk(data_mutex);
   this->flush_all();
@@ -60,17 +60,16 @@ void synced_tensor_dict::set_storage_dir(std::string storage_dir_) {
       throw std::invalid_argument(storage_dir.string() + " is not a directory");
     }
   }
-  std::dynamic_cast<tensor_storage_backend>(backend)->storage_dir=storage_dir_;
+  dynamic_cast<tensor_storage_backend&>(*backend).storage_dir=storage_dir;
 }
 
-std::string synced_tensor_dict::get_storage_dir() const {
+std::filesystem::path synced_tensor_dict::get_storage_dir() const {
   std::lock_guard lk(data_mutex);
-  return storage_dir;
+  return dynamic_cast<tensor_storage_backend&>(*backend).storage_dir;
 }
 
 std::filesystem::path
 tensor_storage_backend::get_tensor_file_path(const std::string &key) const {
-  std::lock_guard lk(data_mutex);
   if (storage_dir.empty()) {
     throw std::runtime_error("storage_dir is empty");
   }
