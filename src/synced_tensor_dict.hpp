@@ -29,7 +29,6 @@ public:
     std::filesystem::path get_storage_dir() const;
 
 private:
-
     std::recursive_mutex data_mutex;
     tensor_storage_backend backend;
 
