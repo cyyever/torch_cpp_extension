@@ -26,7 +26,7 @@ public:
 
 class synced_tensor_dict : public ::cyy::algorithm::cache<torch::Tensor> {
 public:
-  explicit synced_tensor_dict(const std::string &storage_dir_);
+  explicit synced_tensor_dict(std::string storage_dir_);
   void set_storage_dir(std::filesystem::path storage_dir_);
   std::filesystem::path get_storage_dir() const;
 
