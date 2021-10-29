@@ -34,7 +34,8 @@ torch::Tensor tensor_storage_backend::load_data(const std::string &key) {
   torch::load(value, get_tensor_file_path(key).string());
   return value;
 }
-void tensor_storage_backend::save_data(const std::string &key, torch::Tensor value) {
+void tensor_storage_backend::save_data(const std::string &key,
+                                       torch::Tensor value) {
   auto path = get_tensor_file_path(key);
   std::filesystem::remove(path);
   torch::save(value, path.string());
@@ -56,7 +57,7 @@ void synced_tensor_dict::set_storage_dir(std::string storage_dir_) {
       throw std::invalid_argument(storage_dir.string() + " is not a directory");
     }
   }
-  backend.storage_dir=storage_dir_;
+  backend.storage_dir = storage_dir_;
 }
 
 std::string synced_tensor_dict::get_storage_dir() const {
