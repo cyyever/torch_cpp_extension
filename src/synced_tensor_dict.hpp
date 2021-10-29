@@ -12,7 +12,7 @@ namespace cyy::pytorch {
 class tensor_storage_backend
     : public ::cyy::algorithm::storage_backend<torch::Tensor> {
 public:
-  explicit tensor_storage_backend(const std::string &storage_dir_);
+  explicit tensor_storage_backend(std::string storage_dir_);
   std::vector<std::string> load_keys() override;
   void clear_data() override;
   torch::Tensor load_data(const std::string &key) override;
