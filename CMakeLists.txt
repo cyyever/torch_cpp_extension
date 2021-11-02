@@ -39,7 +39,6 @@ find_package(CyyAlgorithmLib REQUIRED)
 find_package(spdlog REQUIRED)
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
   find_package(libcxx REQUIRED)
-  target_link_libraries(CyyAlgorithmLib PUBLIC libcxx::libcxx)
 endif()
 
 add_library(CyyTorchExtensionLib ${SOURCE})
