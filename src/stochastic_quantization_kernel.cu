@@ -1,6 +1,6 @@
 #include <ATen/TensorIterator.h>
 #include <ATen/native/cuda/Loops.cuh>
-#include "tochastic_quantization.hpp"
+#include "stochastic_quantization.hpp"
 
 namespace cyy::pytorch {
 
