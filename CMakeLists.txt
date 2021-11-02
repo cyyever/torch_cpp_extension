@@ -47,7 +47,7 @@ if(HAS_CUDA)
 endif()
 target_link_libraries(CyyTorchExtensionLib PUBLIC CyyAlgorithmLib)
 target_compile_definitions(CyyTorchExtensionLib
-                           PUBLIC _HAS_FEATURES_REMOVED_IN_CXX20=1)
+                           PUBLIC _HAS_FEATURES_REMOVED_IN_CXX20=1 _LIBCPP_ENABLE_CXX20_REMOVED_FEATURES)
 target_link_directories(CyyTorchExtensionLib PUBLIC ${pytorch_path}/lib)
 target_link_libraries(CyyTorchExtensionLib PUBLIC ${TORCH_LIBRARIES} c10
                                                   torch_cpu)
