@@ -33,6 +33,7 @@ if(TARGET torch_cuda)
 endif()
 
 find_package(Boost REQUIRED)
+find_package(range-v3 REQUIRED)
 find_package(CyyNaiveLib REQUIRED)
 find_package(CyyAlgorithmLib REQUIRED)
 find_package(spdlog REQUIRED)
