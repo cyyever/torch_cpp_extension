@@ -1,5 +1,6 @@
-import cyy_torch_cpp_extension
+import pathlib
 
+import cyy_torch_cpp_extension
 import torch
 
 
@@ -9,7 +10,7 @@ def test_synced_sparse_tensor_dict():
         tensor.to_sparse(), tensor.shape, ""
     )
     tensor_dict.set_in_memory_number(10)
-    tensor_dict.set_storage_dir("tensor_dict_dir")
+    tensor_dict.set_storage_dir(pathlib.Path("tensor_dict_dir"))
     for i in range(10):
         tensor_dict[str(i)] = tensor
 
