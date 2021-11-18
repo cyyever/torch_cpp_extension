@@ -27,7 +27,7 @@ std::vector<std::string> tensor_storage_backend::load_keys() {
 }
 
 void tensor_storage_backend::clear_data() {
-  if (!storage_dir.empty() && std::filesystem::exists(storage_dir)) {
+  if (std::filesystem::exists(storage_dir)) {
     std::filesystem::remove_all(storage_dir);
     std::filesystem::create_directories(storage_dir);
   }
@@ -50,7 +50,7 @@ synced_tensor_dict::synced_tensor_dict(std::filesystem::path storage_dir_)
     : cyy::algorithm::cache<torch::Tensor>(
           std::make_unique<tensor_storage_backend>(storage_dir_)) {}
 
-void synced_tensor_dict::set_storage_dir(std::string storage_dir) {
+void synced_tensor_dict::set_storage_dir(std::filesystem::path storage_dir) {
   if (storage_dir.empty()) {
     throw std::invalid_argument(storage_dir + " is not a directory");
   }
