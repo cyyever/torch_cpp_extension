@@ -4,20 +4,25 @@ project(CyyTorchExtensionLib LANGUAGES CXX)
 
 include(cmake/all.cmake)
 
-find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
-if(Python3_FOUND)
-  execute_process(
-    COMMAND ${Python3_EXECUTABLE} -c "import torch ; print(torch.__path__[0])"
-    RESULT_VARIABLE _exitcode
-    OUTPUT_VARIABLE _path)
-  if(NOT ${_exitcode} EQUAL 0)
-    message(FATAL_ERROR "failed to found pytorch path")
+if(NOT WIN32)
+  find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
+  if(Python3_FOUND)
+    execute_process(
+      COMMAND ${Python3_EXECUTABLE} -c "import torch ; print(torch.__path__[0])"
+      RESULT_VARIABLE _exitcode
+      OUTPUT_VARIABLE _path)
+    if(NOT ${_exitcode} EQUAL 0)
+      message(FATAL_ERROR "failed to found pytorch path")
+    endif()
+    string(STRIP ${_path} _path)
+    set(pytorch_path
+        ${_path}
+        CACHE STRING "pytorch path" FORCE)
+    list(PREPEND CMAKE_PREFIX_PATH ${pytorch_path}/share/cmake)
   endif()
-  string(STRIP ${_path} _path)
-  set(pytorch_path
-      ${_path}
-      CACHE STRING "pytorch path" FORCE)
-  list(PREPEND CMAKE_PREFIX_PATH ${pytorch_path}/share/cmake)
+else()
+  list(PREPEND CMAKE_PREFIX_PATH
+       C:/Users/cyyev/Downloads/libtorch/libtorch/share/cmake)
 endif()
 
 find_package(Torch REQUIRED)
@@ -33,6 +38,7 @@ if(TARGET torch_cuda)
 endif()
 
 find_package(Boost REQUIRED)
+find_package(fmt REQUIRED)
 find_package(range-v3 REQUIRED)
 find_package(CyyNaiveLib REQUIRED)
 find_package(CyyAlgorithmLib REQUIRED)
@@ -46,9 +52,15 @@ if(HAS_CUDA)
   target_compile_definitions(CyyTorchExtensionLib PUBLIC HAS_CUDA)
 endif()
 target_link_libraries(CyyTorchExtensionLib PUBLIC CyyAlgorithmLib)
-target_compile_definitions(CyyTorchExtensionLib
-                           PUBLIC _HAS_FEATURES_REMOVED_IN_CXX20=1 _LIBCPP_ENABLE_CXX20_REMOVED_FEATURES)
-target_link_directories(CyyTorchExtensionLib PUBLIC ${pytorch_path}/lib)
+target_compile_definitions(
+  CyyTorchExtensionLib PUBLIC _HAS_FEATURES_REMOVED_IN_CXX20=1
+                              _LIBCPP_ENABLE_CXX20_REMOVED_FEATURES)
+if(DEFINED TORCH_LIBRARY)
+  get_filename_component(libtorch_dir "${TORCH_LIBRARY}" DIRECTORY)
+  message(STATUS ${libtorch_dir})
+  target_link_directories(CyyTorchExtensionLib PRIVATE "${libtorch_dir}")
+endif()
+target_link_directories(CyyTorchExtensionLib PRIVATE ${pytorch_path}/lib)
 target_link_libraries(CyyTorchExtensionLib PUBLIC ${TORCH_LIBRARIES} c10
                                                   torch_cpu)
 if(TARGET torch_cuda)
@@ -62,7 +74,9 @@ target_include_directories(
   CyyTorchExtensionLib PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
                               $<INSTALL_INTERFACE:include/cyy/torch>)
 
-add_subdirectory(python_binding)
+if(NOT WIN32)
+  add_subdirectory(python_binding)
+endif()
 # test
 add_subdirectory(test)
 
