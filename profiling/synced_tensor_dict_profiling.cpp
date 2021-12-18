@@ -9,7 +9,7 @@
 
 #include <cyy/naive_lib/util/time.hpp>
 #include <cyy/naive_lib/log/log.hpp>
-#include "src/synced_tensor_dict.hpp"
+#include "synced_tensor_dict.hpp"
 int main(int argc, char **argv) {
   cyy::pytorch::synced_tensor_dict dict("tensor_dir_profiling");
 
@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
   std::cout << "insertion used " << end_ms - begin_ms << " ms" << std::endl;
   dict.release();
 
-  cyy::naive_lib::pytorch::synced_tensor_dict dict2("tensor_dir_profiling");
+  cyy::pytorch::synced_tensor_dict dict2("tensor_dir_profiling");
 
   dict2.set_in_memory_number(1024);
   dict2.enable_permanent_storage();
