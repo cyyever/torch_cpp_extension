@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-import glob
 import os
 import shutil
+from pathlib import Path
 
 from setuptools import Extension, setup
 from setuptools.command.build_ext import build_ext
@@ -26,8 +26,8 @@ class CMakeBuild(build_ext):
             extdir += os.path.sep
         os.makedirs(extdir, exist_ok=True)
         cmake_build_dir = os.getenv("cmake_build_dir")
-        for f in glob.glob(os.path.join(cmake_build_dir, "**", "*cyy_torch_cpp_extension*")):
-            if not f.endswith(".so"):
+        for f in Path(cmake_build_dir).rglob("*"):
+            if not f.endswith(".so") and not f.endswith(".dll"):
                 continue
             shutil.copy(f, extdir)
 
