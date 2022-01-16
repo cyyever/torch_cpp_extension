@@ -12,18 +12,13 @@ from setuptools.command.build_ext import build_ext
 
 
 class CMakeExtension(Extension):
-    def __init__(self, name, sourcedir=""):
+    def __init__(self, name):
         Extension.__init__(self, name, sources=[])
-        self.sourcedir = os.path.abspath(sourcedir)
 
 
 class CMakeBuild(build_ext):
     def build_extension(self, ext):
         extdir = os.path.abspath(os.path.dirname(self.get_ext_fullpath(ext.name)))
-
-        os.makedirs(extdir, exist_ok=True)
-        os.makedirs(self.build_temp, exist_ok=True)
-
         cmake_build_dir = os.getenv("cmake_build_dir")
         for f in Path(cmake_build_dir).rglob("*"):
             if (
@@ -31,9 +26,8 @@ class CMakeBuild(build_ext):
                 or str(f).endswith(".dll")
                 or str(f).endswith(".lib")
             ):
-                shutil.copy(f, extdir)
-            if str(f).endswith(".lib"):
-                shutil.copy(f, self.build_temp)
+                shutil.copytree(os.path.dirname(f), extdir)
+                break
 
 
 # The information here can also be placed in setup.cfg - better separation of
