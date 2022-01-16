@@ -21,18 +21,12 @@ class CMakeBuild(build_ext):
     def build_extension(self, ext):
         extdir = os.path.abspath(os.path.dirname(self.get_ext_fullpath(ext.name)))
 
-        # required for auto-detection of auxiliary "native" libs
-        if not extdir.endswith(os.path.sep):
-            extdir += os.path.sep
-        os.makedirs(extdir, exist_ok=True)
         cmake_build_dir = os.getenv("cmake_build_dir")
         for f in Path(cmake_build_dir).rglob("*"):
-            if (
-                str(f).endswith(".so")
-                or str(f).endswith(".dll")
-                or str(f).endswith(".lib")
-            ):
+            if str(f).endswith(".so") or str(f).endswith(".dll"):
                 shutil.copy(f, extdir)
+            if str(f).endswith(".lib"):
+                shutil.copy(f, self.build_temp)
 
 
 # The information here can also be placed in setup.cfg - better separation of
