@@ -4,25 +4,20 @@ project(CyyTorchExtensionLib LANGUAGES CXX)
 
 include(cmake/all.cmake)
 
-if(NOT WIN32)
-  find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
-  if(Python3_FOUND)
-    execute_process(
-      COMMAND ${Python3_EXECUTABLE} -c "import torch ; print(torch.__path__[0])"
-      RESULT_VARIABLE _exitcode
-      OUTPUT_VARIABLE _path)
-    if(NOT ${_exitcode} EQUAL 0)
-      message(FATAL_ERROR "failed to found pytorch path")
-    endif()
-    string(STRIP ${_path} _path)
-    set(pytorch_path
-        ${_path}
-        CACHE STRING "pytorch path" FORCE)
-    list(PREPEND CMAKE_PREFIX_PATH ${pytorch_path}/share/cmake)
+find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
+if(Python3_FOUND)
+  execute_process(
+    COMMAND ${Python3_EXECUTABLE} -c "import torch ; print(torch.__path__[0])"
+    RESULT_VARIABLE _exitcode
+    OUTPUT_VARIABLE _path)
+  if(NOT ${_exitcode} EQUAL 0)
+    message(FATAL_ERROR "failed to found pytorch path")
   endif()
-else()
-  list(PREPEND CMAKE_PREFIX_PATH
-       C:/Users/cyyev/Downloads/libtorch/libtorch/share/cmake)
+  string(STRIP ${_path} _path)
+  set(pytorch_path
+      ${_path}
+      CACHE STRING "pytorch path" FORCE)
+  list(PREPEND CMAKE_PREFIX_PATH ${pytorch_path}/share/cmake)
 endif()
 
 find_package(Torch REQUIRED)
@@ -74,9 +69,7 @@ target_include_directories(
   CyyTorchExtensionLib PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
                               $<INSTALL_INTERFACE:include/cyy/torch>)
 
-if(NOT WIN32)
-  add_subdirectory(python_binding)
-endif()
+add_subdirectory(python_binding)
 # test
 add_subdirectory(test)
 
