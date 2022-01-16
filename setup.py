@@ -26,7 +26,7 @@ class CMakeBuild(build_ext):
                 or str(f).endswith(".dll")
                 or str(f).endswith(".lib")
             ):
-                shutil.copytree(os.path.dirname(f), extdir)
+                shutil.copytree(os.path.dirname(f), extdir, dirs_exist_ok=True)
                 break
 
 
