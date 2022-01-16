@@ -27,9 +27,12 @@ class CMakeBuild(build_ext):
         os.makedirs(extdir, exist_ok=True)
         cmake_build_dir = os.getenv("cmake_build_dir")
         for f in Path(cmake_build_dir).rglob("*"):
-            if not str(f).endswith(".so") and not str(f).endswith(".dll"):
-                continue
-            shutil.copy(f, extdir)
+            if (
+                str(f).endswith(".so")
+                or str(f).endswith(".dll")
+                or str(f).endswith(".lib")
+            ):
+                shutil.copy(f, extdir)
 
 
 # The information here can also be placed in setup.cfg - better separation of
