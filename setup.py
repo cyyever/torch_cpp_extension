@@ -21,6 +21,8 @@ class CMakeBuild(build_ext):
     def build_extension(self, ext):
         extdir = os.path.abspath(os.path.dirname(self.get_ext_fullpath(ext.name)))
 
+        os.makedirs(extdir, exist_ok=True)
+
         cmake_build_dir = os.getenv("cmake_build_dir")
         for f in Path(cmake_build_dir).rglob("*"):
             if str(f).endswith(".so") or str(f).endswith(".dll"):
