@@ -1,5 +1,4 @@
 #include <ATen/TensorIterator.h>
-#include <cyy/naive_lib/log/log.hpp>
 #include <ATen/native/cuda/Loops.cuh>
 #include "stochastic_quantization.hpp"
 
@@ -13,7 +12,6 @@ void stochastic_quantization_gpu(at::Tensor &slot_ret, const at::Tensor &src,
                   .add_input(at::get_tensor_base(src))
                   .build();
 
-  LOG_WARN("use gpu for quantization");
   at::native::gpu_kernel(
       iter, [quantization_level] GPU_LAMBDA(const float src_val) -> float {
         uint64_t slot = static_cast<uint64_t>(src_val * quantization_level);
