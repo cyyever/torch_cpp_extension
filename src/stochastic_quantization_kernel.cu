@@ -1,4 +1,5 @@
 #include <ATen/TensorIterator.h>
+#include <cyy/naive_lib/log/log.hpp>
 #include <ATen/native/cuda/Loops.cuh>
 #include "stochastic_quantization.hpp"
 
