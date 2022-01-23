@@ -5,12 +5,16 @@
  * \author cyy
  */
 #include <thread>
+#include <filesystem>
 
 #include <doctest/doctest.h>
 
 #include "synced_tensor_dict.hpp"
 
 TEST_CASE("synced_tensor_dict") {
+  if(std::filesystem::exists("tensor_dir")) {
+    std::filesystem::remove_all("tensor_dir");
+  }
   cyy::pytorch::synced_tensor_dict dict("tensor_dir");
 
   CHECK_EQ(dict.size(), 0);

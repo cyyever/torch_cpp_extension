@@ -5,6 +5,7 @@
  * \author cyy
  */
 #include <doctest/doctest.h>
+#include <filesystem>
 
 #include "synced_sparse_tensor_dict.hpp"
 
@@ -12,6 +13,9 @@ TEST_CASE("synced_sparse_tensor_dict") {
   auto sparse_tensor = torch::eye(3);
   auto mask = (sparse_tensor != 0);
 
+  if(std::filesystem::exists("tensor_dir2")) {
+    std::filesystem::remove_all("tensor_dir2");
+  }
   cyy::pytorch::synced_sparse_tensor_dict dict(mask, sparse_tensor.sizes(),"tensor_dir2");
 
   CHECK_EQ(dict.size(), 0);
