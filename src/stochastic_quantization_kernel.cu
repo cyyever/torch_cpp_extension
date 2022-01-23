@@ -2,7 +2,8 @@
 #include <ATen/native/cuda/Loops.cuh>
 #include "stochastic_quantization.hpp"
 
-namespace cyy::pytorch {
+namespace cyy{
+namespace pytorch {
 
 void stochastic_quantization_gpu(at::Tensor &slot_ret, const at::Tensor &src,
                                  uint64_t quantization_level) {
@@ -19,4 +20,5 @@ void stochastic_quantization_gpu(at::Tensor &slot_ret, const at::Tensor &src,
       });
 }
 
-} // namespace cyy::pytorch
+}
+}
