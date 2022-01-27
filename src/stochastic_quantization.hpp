@@ -14,5 +14,5 @@ void stochastic_quantization_gpu(at::Tensor &slot_tensor,
                                  const torch::Tensor &normalized_abs_tensor,
                                  uint64_t quantization_level);
 #endif
-} 
-} 
+} // namespace pytorch
+} // namespace cyy

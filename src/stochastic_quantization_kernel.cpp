@@ -1,8 +1,8 @@
 
-#include <cyy/naive_lib/log/log.hpp>
 #include "stochastic_quantization.hpp"
 #include <ATen/TensorIterator.h>
 #include <ATen/native/cpu/Loops.h>
+#include <cyy/naive_lib/log/log.hpp>
 
 namespace cyy::pytorch {
 

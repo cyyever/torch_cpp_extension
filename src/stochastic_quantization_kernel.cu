@@ -1,8 +1,8 @@
+#include "stochastic_quantization.hpp"
 #include <ATen/TensorIterator.h>
 #include <ATen/native/cuda/Loops.cuh>
-#include "stochastic_quantization.hpp"
 
-namespace cyy{
+namespace cyy {
 namespace pytorch {
 
 void stochastic_quantization_gpu(at::Tensor &slot_ret, const at::Tensor &src,
@@ -20,5 +20,5 @@ void stochastic_quantization_gpu(at::Tensor &slot_ret, const at::Tensor &src,
       });
 }
 
-}
-}
+} // namespace pytorch
+} // namespace cyy
