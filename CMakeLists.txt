@@ -20,6 +20,7 @@ if(Python3_FOUND)
   list(PREPEND CMAKE_PREFIX_PATH ${pytorch_path}/share/cmake)
 endif()
 
+enable_language(CUDA)
 find_package(Torch REQUIRED)
 
 file(GLOB_RECURSE SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
