@@ -20,6 +20,7 @@ TEST_CASE("synced_tensor_dict") {
   CHECK_EQ(dict.size(), 0);
 
   dict.set_in_memory_number(3);
+  auto tmp = torch::rand({1, 200 * 1024});
 
   // save sparse tensor
   auto sparse_tensor = torch::eye(3).to_sparse();

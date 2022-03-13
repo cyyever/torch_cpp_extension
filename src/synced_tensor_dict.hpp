@@ -3,7 +3,7 @@
 #include <mutex>
 #include <utility>
 
-#include <torch/types.h>
+#include <torch/serialize.h>
 
 #include <cyy/algorithm/dict/cache.hpp>
 

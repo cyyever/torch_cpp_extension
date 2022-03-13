@@ -20,18 +20,14 @@ if(Python3_FOUND)
   list(PREPEND CMAKE_PREFIX_PATH ${pytorch_path}/share/cmake)
 endif()
 
-enable_language(CUDA)
+# enable_language(CUDA)
 find_package(Torch REQUIRED)
 
 file(GLOB_RECURSE SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 
-# set(HAS_CUDA OFF)
-# if(TARGET torch_cuda)
-#   enable_language(CUDA)
-#   file(GLOB CUDA_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cu)
-#   list(APPEND SOURCE ${CUDA_SOURCE})
-#   set(HAS_CUDA ON)
-# endif()
+# set(HAS_CUDA OFF) if(TARGET torch_cuda) enable_language(CUDA) file(GLOB
+# CUDA_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cu) list(APPEND SOURCE
+# ${CUDA_SOURCE}) set(HAS_CUDA ON) endif()
 
 find_package(Boost REQUIRED)
 find_package(fmt REQUIRED)
@@ -39,31 +35,23 @@ find_package(range-v3 REQUIRED)
 find_package(CyyNaiveLib REQUIRED)
 find_package(CyyAlgorithmLib REQUIRED)
 find_package(spdlog REQUIRED)
-if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-  find_package(libcxx REQUIRED)
-endif()
 
 add_library(CyyTorchExtensionLib ${SOURCE})
-# if(HAS_CUDA)
-#   target_compile_definitions(CyyTorchExtensionLib PUBLIC HAS_CUDA)
+# if(HAS_CUDA) target_compile_definitions(CyyTorchExtensionLib PUBLIC HAS_CUDA)
 # endif()
 target_link_libraries(CyyTorchExtensionLib PUBLIC CyyAlgorithmLib)
-target_compile_definitions(
-  CyyTorchExtensionLib PUBLIC _HAS_FEATURES_REMOVED_IN_CXX20=1
-                              _LIBCPP_ENABLE_CXX20_REMOVED_FEATURES)
+# target_compile_definitions( CyyTorchExtensionLib PUBLIC
+# _HAS_FEATURES_REMOVED_IN_CXX20=1 _LIBCPP_ENABLE_CXX20_REMOVED_FEATURES)
 if(DEFINED TORCH_LIBRARY)
   get_filename_component(libtorch_dir "${TORCH_LIBRARY}" DIRECTORY)
   message(STATUS ${libtorch_dir})
   target_link_directories(CyyTorchExtensionLib PRIVATE "${libtorch_dir}")
 endif()
 target_link_directories(CyyTorchExtensionLib PRIVATE ${pytorch_path}/lib)
-target_link_libraries(CyyTorchExtensionLib PUBLIC ${TORCH_LIBRARIES} c10
-                                                  torch_cpu)
-# if(TARGET torch_cuda)
-#   target_link_libraries(CyyTorchExtensionLib PUBLIC torch_cuda)
-#   target_compile_definitions(
-#     CyyTorchExtensionLib PRIVATE __CUDA_NO_HALF_OPERATORS__ CUDA_HAS_FP16=1
-#                                  __CUDA_NO_HALF_CONVERSIONS__)
+target_link_libraries(CyyTorchExtensionLib PUBLIC ${TORCH_LIBRARIES})
+# if(TARGET torch_cuda) target_link_libraries(CyyTorchExtensionLib PUBLIC
+# torch_cuda) target_compile_definitions( CyyTorchExtensionLib PRIVATE
+# __CUDA_NO_HALF_OPERATORS__ CUDA_HAS_FP16=1 __CUDA_NO_HALF_CONVERSIONS__)
 # endif()
 
 target_include_directories(
