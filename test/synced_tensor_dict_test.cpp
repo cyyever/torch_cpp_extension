@@ -32,18 +32,16 @@ TEST_CASE("synced_tensor_dict") {
 
   CHECK_EQ(dict.size(), 0);
 
-  std::vector<std::thread> thds;
-  for (int i = 0; i < 10; i++) {
-    thds.emplace_back([i, &dict]() {
-      for (int j = 0; j < 10; j++) {
-        dict.emplace(std::to_string(i * 10 + j), torch::rand({1, 200 * 1024}));
-      }
-    });
+  {
+    std::vector<std::jthread> thds;
+    for (int i = 0; i < 10; i++) {
+      thds.emplace_back([i, &dict,tmp]() {
+          for (int j = 0; j < 10; j++) {
+          dict.emplace(std::to_string(i * 10 + j), torch::rand({1, 200 * 1024}));
+          }
+          });
+    }
   }
-  for (auto &thd : thds) {
-    thd.join();
-  }
-  thds.clear();
   CHECK_EQ(dict.size(), 100);
   CHECK_EQ(dict.keys().size(), 100);
 
@@ -62,16 +60,15 @@ TEST_CASE("synced_tensor_dict") {
   CHECK(!dict.contains("100000"));
   CHECK(!dict.get("100000").has_value());
   dict.erase("10000");
-
-  for (int i = 0; i < 10; i++) {
-    thds.emplace_back([i, &dict]() {
-      for (int j = 0; j < 10; j++) {
-        auto tr = dict.get(std::to_string(i * 10 + j));
-      }
-    });
-  }
-  for (auto &thd : thds) {
-    thd.join();
+  {
+    std::vector<std::jthread> thds;
+    for (int i = 0; i < 10; i++) {
+      thds.emplace_back([i, &dict]() {
+          for (int j = 0; j < 10; j++) {
+          auto tr = dict.get(std::to_string(i * 10 + j));
+          }
+          });
+    }
   }
   CHECK_EQ(dict.size(), 100);
   dict.enable_permanent_storage();
