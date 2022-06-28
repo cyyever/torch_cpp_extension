@@ -58,6 +58,7 @@ target_include_directories(
   CyyTorchExtensionLib
   PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
          $<BUILD_INTERFACE:${pytorch_path}/include/torch/csrc/api/include>
+         $<BUILD_INTERFACE:${pytorch_path}/include>
          $<INSTALL_INTERFACE:include/cyy/torch>)
 
 add_subdirectory(python_binding)
