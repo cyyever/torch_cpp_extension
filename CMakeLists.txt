@@ -48,7 +48,7 @@ if(DEFINED TORCH_LIBRARY)
   target_link_directories(CyyTorchExtensionLib PRIVATE "${libtorch_dir}")
 endif()
 target_link_directories(CyyTorchExtensionLib PRIVATE ${pytorch_path}/lib)
-target_link_libraries(CyyTorchExtensionLib PRIVATE ${TORCH_LIBRARIES})
+target_link_libraries(CyyTorchExtensionLib PUBLIC ${TORCH_LIBRARIES})
 # if(TARGET torch_cuda) target_link_libraries(CyyTorchExtensionLib PUBLIC
 # torch_cuda) target_compile_definitions( CyyTorchExtensionLib PRIVATE
 # __CUDA_NO_HALF_OPERATORS__ CUDA_HAS_FP16=1 __CUDA_NO_HALF_CONVERSIONS__)
