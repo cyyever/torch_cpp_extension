@@ -39,7 +39,7 @@ find_package(spdlog REQUIRED)
 add_library(CyyTorchExtensionLib ${SOURCE})
 # if(HAS_CUDA) target_compile_definitions(CyyTorchExtensionLib PUBLIC HAS_CUDA)
 # endif()
-target_link_libraries(CyyTorchExtensionLib PRIVATE CyyNaiveLib fmt)
+target_link_libraries(CyyTorchExtensionLib PRIVATE CyyNaiveLib::log fmt)
 # target_compile_definitions( CyyTorchExtensionLib PUBLIC
 # _HAS_FEATURES_REMOVED_IN_CXX20=1 _LIBCPP_ENABLE_CXX20_REMOVED_FEATURES)
 if(DEFINED TORCH_LIBRARY)
@@ -55,8 +55,10 @@ target_link_libraries(CyyTorchExtensionLib PRIVATE ${TORCH_LIBRARIES})
 # endif()
 
 target_include_directories(
-  CyyTorchExtensionLib PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
-                              $<INSTALL_INTERFACE:include/cyy/torch>)
+  CyyTorchExtensionLib
+  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+         $<BUILD_INTERFACE:${pytorch_path}/include/torch/csrc/api/include>
+         $<INSTALL_INTERFACE:include/cyy/torch>)
 
 add_subdirectory(python_binding)
 # test
