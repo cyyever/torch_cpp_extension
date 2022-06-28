@@ -1,3 +1,6 @@
 [submodule "cmake"]
 	path = cmake
 	url = git@github.com:cyyever/cmake.git
+[submodule "third_party/algorithm"]
+	path = third_party/algorithm
+	url = git@github.com:cyyever/algorithm.git
