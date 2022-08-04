@@ -23,13 +23,12 @@ endif()
 # enable_language(CUDA)
 find_package(Torch REQUIRED)
 
-file(GLOB_RECURSE SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
+file(GLOB_RECURSE SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/src/synced_tensor_dict.cpp)
 
 # set(HAS_CUDA OFF) if(TARGET torch_cuda) enable_language(CUDA) file(GLOB
 # CUDA_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cu) list(APPEND SOURCE
 # ${CUDA_SOURCE}) set(HAS_CUDA ON) endif()
 
-find_package(Boost REQUIRED)
 find_package(fmt REQUIRED)
 find_package(CyyNaiveLib REQUIRED)
 find_package(CyyAlgorithmLib REQUIRED)
@@ -38,7 +37,7 @@ find_package(spdlog REQUIRED)
 add_library(CyyTorchExtensionLib ${SOURCE})
 # if(HAS_CUDA) target_compile_definitions(CyyTorchExtensionLib PUBLIC HAS_CUDA)
 # endif()
-target_link_libraries(CyyTorchExtensionLib PRIVATE CyyNaiveLib::log fmt CyyNaiveLib::util)
+target_link_libraries(CyyTorchExtensionLib PRIVATE CyyNaiveLib::log CyyNaiveLib::util)
 # target_compile_definitions( CyyTorchExtensionLib PUBLIC
 # _HAS_FEATURES_REMOVED_IN_CXX20=1 _LIBCPP_ENABLE_CXX20_REMOVED_FEATURES)
 if(DEFINED TORCH_LIBRARY)
