@@ -31,7 +31,6 @@ file(GLOB_RECURSE SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 
 find_package(Boost REQUIRED)
 find_package(fmt REQUIRED)
-find_package(range-v3 REQUIRED)
 find_package(CyyNaiveLib REQUIRED)
 find_package(CyyAlgorithmLib REQUIRED)
 find_package(spdlog REQUIRED)
