@@ -5,6 +5,46 @@
 
 namespace cyy::pytorch {
 
+class tensor_storage_backend
+    : public ::cyy::algorithm::storage_backend<torch::Tensor> {
+public:
+  explicit tensor_storage_backend(std::filesystem::path storage_dir_)
+      : storage_dir(storage_dir_) {}
+  std::vector<std::string> load_keys() override;
+  void clear_data() override {
+    std::lock_guard lk(data_mutex);
+    if (std::filesystem::exists(storage_dir)) {
+      std::filesystem::remove_all(storage_dir);
+      std::filesystem::create_directories(storage_dir);
+    }
+  }
+  torch::Tensor load_data(const std::string &key) override {
+
+    std::lock_guard lk(data_mutex);
+    torch::Tensor value;
+    torch::load(value, get_tensor_file_path(key).string());
+    return value;
+  }
+  void save_data(const std::string &key, torch::Tensor value) override {
+
+    std::lock_guard lk(data_mutex);
+    auto path = get_tensor_file_path(key);
+    std::filesystem::remove(path);
+    torch::save(value, path.string());
+  }
+  void erase_data(const std::string &key) override {
+
+    std::lock_guard lk(data_mutex);
+    std::filesystem::remove(get_tensor_file_path(key).string());
+  }
+  std::filesystem::path get_tensor_file_path(const std::string &key) const;
+
+public:
+  std::filesystem::path storage_dir;
+private:
+  std::mutex data_mutex;
+};
+
 std::vector<std::string> tensor_storage_backend::load_keys() {
   std::vector<std::string> keys;
   if (storage_dir.empty()) {
@@ -26,26 +66,6 @@ std::vector<std::string> tensor_storage_backend::load_keys() {
   return keys;
 }
 
-void tensor_storage_backend::clear_data() {
-  if (std::filesystem::exists(storage_dir)) {
-    std::filesystem::remove_all(storage_dir);
-    std::filesystem::create_directories(storage_dir);
-  }
-}
-torch::Tensor tensor_storage_backend::load_data(const std::string &key) {
-  torch::Tensor value;
-  torch::load(value, get_tensor_file_path(key).string());
-  return value;
-}
-void tensor_storage_backend::save_data(const std::string &key,
-                                       torch::Tensor value) {
-  auto path = get_tensor_file_path(key);
-  std::filesystem::remove(path);
-  torch::save(value, path.string());
-}
-void tensor_storage_backend::erase_data(const std::string &key) {
-  std::filesystem::remove(get_tensor_file_path(key).string());
-}
 synced_tensor_dict::synced_tensor_dict(std::filesystem::path storage_dir_)
     : cyy::algorithm::cache<torch::Tensor>(
           std::make_unique<tensor_storage_backend>(storage_dir_)) {}

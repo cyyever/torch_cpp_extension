@@ -29,17 +29,19 @@ file(GLOB_RECURSE SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 # CUDA_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cu) list(APPEND SOURCE
 # ${CUDA_SOURCE}) set(HAS_CUDA ON) endif()
 
-find_package(fmt REQUIRED)
+# find_package(fmt REQUIRED)
 find_package(CyyNaiveLib REQUIRED)
-find_package(CyyAlgorithmLib REQUIRED)
+# find_package(CyyAlgorithmLib REQUIRED)
 find_package(spdlog REQUIRED)
 
 add_library(CyyTorchExtensionLib ${SOURCE})
 # if(HAS_CUDA) target_compile_definitions(CyyTorchExtensionLib PUBLIC HAS_CUDA)
 # endif()
-target_link_libraries(CyyTorchExtensionLib PRIVATE CyyNaiveLib::log CyyNaiveLib::util)
-# target_compile_definitions( CyyTorchExtensionLib PUBLIC
-# _HAS_FEATURES_REMOVED_IN_CXX20=1 _LIBCPP_ENABLE_CXX20_REMOVED_FEATURES)
+target_link_libraries(CyyTorchExtensionLib PRIVATE CyyNaiveLib::log
+                                                   CyyNaiveLib::util)
+target_compile_definitions(
+  CyyTorchExtensionLib PUBLIC _HAS_FEATURES_REMOVED_IN_CXX20=1
+                              _LIBCPP_ENABLE_CXX20_REMOVED_FEATURES)
 if(DEFINED TORCH_LIBRARY)
   get_filename_component(libtorch_dir "${TORCH_LIBRARY}" DIRECTORY)
   message(STATUS ${libtorch_dir})
@@ -54,10 +56,12 @@ target_link_libraries(CyyTorchExtensionLib PUBLIC ${TORCH_LIBRARIES})
 
 target_include_directories(
   CyyTorchExtensionLib
-  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
-         $<BUILD_INTERFACE:${pytorch_path}/include/torch/csrc/api/include>
-         $<BUILD_INTERFACE:${pytorch_path}/include>
-         $<INSTALL_INTERFACE:include/cyy/torch>)
+  PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/third_party/algorithm/src>
+    $<BUILD_INTERFACE:${pytorch_path}/include/torch/csrc/api/include>
+    $<BUILD_INTERFACE:${pytorch_path}/include>
+    $<INSTALL_INTERFACE:include/cyy/torch>)
 
 add_subdirectory(python_binding)
 # test
