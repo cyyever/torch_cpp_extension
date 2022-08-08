@@ -29,9 +29,7 @@ file(GLOB_RECURSE SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 # CUDA_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cu) list(APPEND SOURCE
 # ${CUDA_SOURCE}) set(HAS_CUDA ON) endif()
 
-# find_package(fmt REQUIRED)
 find_package(CyyNaiveLib REQUIRED)
-# find_package(CyyAlgorithmLib REQUIRED)
 find_package(spdlog REQUIRED)
 
 add_library(CyyTorchExtensionLib ${SOURCE})

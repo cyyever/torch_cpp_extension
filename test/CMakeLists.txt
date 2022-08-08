@@ -12,7 +12,7 @@ foreach(test_source IN LISTS test_sources)
   target_link_libraries(${test_prog} PRIVATE CyyTorchExtensionLib)
   target_compile_definitions(${test_prog}
                              PRIVATE DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN)
-  add_test_with_runtime_analysis(TARGET ${test_prog} MEMCHECK OFF)
+  add_test_with_runtime_analysis(TARGET ${test_prog} MEMCHECK OFF HELGRIND OFF)
   get_target_property(new_env ${test_prog} ENVIRONMENT)
   list(APPEND new_env "LD_LIBRARY_PATH=${pytorch_path}/lib")
   set_target_properties(${test_prog} PROPERTIES ENVIRONMENT "${new_env}")

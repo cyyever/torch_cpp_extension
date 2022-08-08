@@ -9,10 +9,10 @@
 #include <pybind11/stl/filesystem.h>
 #include <torch/extension.h>
 
-#include "synced_tensor_dict.hpp"
+#include "../src/synced_tensor_dict.hpp"
 namespace py = pybind11;
 inline void define_torch_data_structure_extension(py::module_ &m) {
-  using synced_tensor_dict = cyy::pytorch::synced_tensor_dict;
+  using synced_tensor_dict = ::cyy::pytorch::synced_tensor_dict;
   auto sub_m = m.def_submodule("data_structure", "Contains data structures");
   py::class_<synced_tensor_dict>(sub_m, "SyncedTensorDict")
       .def(py::init<const std::string &>())
