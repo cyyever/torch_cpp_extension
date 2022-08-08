@@ -9,12 +9,10 @@
 #include <pybind11/stl/filesystem.h>
 #include <torch/extension.h>
 
-#include "synced_sparse_tensor_dict.hpp"
 #include "synced_tensor_dict.hpp"
 namespace py = pybind11;
 inline void define_torch_data_structure_extension(py::module_ &m) {
   using synced_tensor_dict = cyy::pytorch::synced_tensor_dict;
-  using synced_sparse_tensor_dict = cyy::pytorch::synced_sparse_tensor_dict;
   auto sub_m = m.def_submodule("data_structure", "Contains data structures");
   py::class_<synced_tensor_dict>(sub_m, "SyncedTensorDict")
       .def(py::init<const std::string &>())
@@ -85,22 +83,5 @@ inline void define_torch_data_structure_extension(py::module_ &m) {
       .def("flush",
            static_cast<void (synced_tensor_dict::*)(size_t)>(
                &synced_tensor_dict::flush),
-           py::call_guard<py::gil_scoped_release>());
-  py::class_<synced_sparse_tensor_dict, synced_tensor_dict>(
-      sub_m, "SyncedSparseTensorDict")
-      .def(py::init<torch::Tensor, torch::IntArrayRef, const std::string &>())
-      .def("__copy__",
-           [](const synced_sparse_tensor_dict &) {
-             throw std::runtime_error("copy is not supported");
-           })
-      .def(
-          "__deepcopy__",
-          [](const synced_sparse_tensor_dict &, py::dict) {
-            return std::runtime_error("deepcopy is not supported");
-          },
-          py::arg("memo"))
-      .def("__getitem__", &synced_sparse_tensor_dict::get,
-           py::call_guard<py::gil_scoped_release>())
-      .def("__setitem__", &synced_sparse_tensor_dict::emplace,
            py::call_guard<py::gil_scoped_release>());
 }
