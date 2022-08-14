@@ -5,8 +5,6 @@
  */
 
 #pragma once
-#include <pybind11/stl.h>
-#include <pybind11/stl/filesystem.h>
 #include <torch/extension.h>
 
 #include "../src/synced_tensor_dict.hpp"
