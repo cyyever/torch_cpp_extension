@@ -1,5 +1,4 @@
 #include "synced_tensor_dict.hpp"
-#include <cyy/naive_lib/log/log.hpp>
 #include <torch/csrc/api/include/torch/serialize.h>
 
 #include <stdexcept>
@@ -77,9 +76,6 @@ synced_tensor_dict::synced_tensor_dict(std::filesystem::path storage_dir_)
     : cyy::algorithm::cache<torch::Tensor>(
           std::make_unique<tensor_storage_backend>(storage_dir_)) {}
 synced_tensor_dict::~synced_tensor_dict() {
-  if (!std::filesystem::exists(get_storage_dir())) {
-    LOG_ERROR("no storage_dir when release");
-  }
   release();
 }
 /* void synced_tensor_dict::set_storage_dir(std::filesystem::path storage_dir) {
