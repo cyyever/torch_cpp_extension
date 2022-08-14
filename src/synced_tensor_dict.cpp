@@ -9,7 +9,12 @@ class tensor_storage_backend
     : public ::cyy::algorithm::storage_backend<torch::Tensor> {
 public:
   explicit tensor_storage_backend(std::filesystem::path storage_dir_)
-      : storage_dir(storage_dir_) {}
+      : storage_dir(storage_dir_) {
+
+    if (!std::filesystem::exists(storage_dir)) {
+      std::filesystem::create_directories(storage_dir);
+    }
+  }
   std::vector<std::string> load_keys() override;
   void clear_data() override {
     std::lock_guard lk(data_mutex);
@@ -41,6 +46,7 @@ public:
 
 public:
   std::filesystem::path storage_dir;
+
 private:
   std::mutex data_mutex;
 };
