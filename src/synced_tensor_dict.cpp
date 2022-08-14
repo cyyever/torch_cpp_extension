@@ -13,6 +13,11 @@ public:
 
     if (!std::filesystem::exists(storage_dir)) {
       std::filesystem::create_directories(storage_dir);
+    } else {
+      if (!std::filesystem::is_directory(storage_dir)) {
+        throw std::invalid_argument(storage_dir.string() +
+                                    " is not a directory");
+      }
     }
   }
   std::vector<std::string> load_keys() override {
@@ -21,28 +26,18 @@ public:
     if (storage_dir.empty()) {
       return keys;
     }
-    if (std::filesystem::exists(storage_dir)) {
-      if (!std::filesystem::is_directory(storage_dir)) {
-        throw std::invalid_argument(storage_dir.string() +
-                                    " is not a directory");
+    for (const auto &f : std::filesystem::directory_iterator(storage_dir)) {
+      if (f.is_regular_file()) {
+        auto key = f.path().filename().string();
+        keys.push_back(std::move(key));
       }
-      for (const auto &f : std::filesystem::directory_iterator(storage_dir)) {
-        if (f.is_regular_file()) {
-          auto key = f.path().filename().string();
-          keys.push_back(std::move(key));
-        }
-      }
-    } else {
-      std::filesystem::create_directories(storage_dir);
     }
     return keys;
   }
   void clear_data() override {
     std::lock_guard lk(data_mutex);
-    if (std::filesystem::exists(storage_dir)) {
-      std::filesystem::remove_all(storage_dir);
-      std::filesystem::create_directories(storage_dir);
-    }
+    std::filesystem::remove_all(storage_dir);
+    std::filesystem::create_directories(storage_dir);
   }
   torch::Tensor load_data(const std::string &key) override {
 
@@ -75,9 +70,7 @@ private:
 synced_tensor_dict::synced_tensor_dict(std::filesystem::path storage_dir_)
     : cyy::algorithm::cache<torch::Tensor>(
           std::make_unique<tensor_storage_backend>(storage_dir_)) {}
-synced_tensor_dict::~synced_tensor_dict() {
-  release();
-}
+synced_tensor_dict::~synced_tensor_dict() { release(); }
 /* void synced_tensor_dict::set_storage_dir(std::filesystem::path storage_dir) {
  */
 /*   if (storage_dir.empty()) { */
