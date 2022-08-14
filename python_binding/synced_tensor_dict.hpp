@@ -25,8 +25,8 @@ inline void define_torch_data_structure_extension(py::module_ &m) {
            py::call_guard<py::gil_scoped_release>())
       .def("get_in_memory_number", &synced_tensor_dict::get_in_memory_number,
            py::call_guard<py::gil_scoped_release>())
-      .def("set_storage_dir", &synced_tensor_dict::set_storage_dir,
-           py::call_guard<py::gil_scoped_release>())
+      /* .def("set_storage_dir", &synced_tensor_dict::set_storage_dir, */
+      /*      py::call_guard<py::gil_scoped_release>()) */
       .def("get_storage_dir", &synced_tensor_dict::get_storage_dir)
       .def("set_permanent_storage",
            &synced_tensor_dict::enable_permanent_storage,
