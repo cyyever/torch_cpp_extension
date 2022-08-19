@@ -1,5 +1,4 @@
 #include "synced_tensor_dict.hpp"
-#include <torch/csrc/api/include/torch/serialize.h>
 
 #include <stdexcept>
 
