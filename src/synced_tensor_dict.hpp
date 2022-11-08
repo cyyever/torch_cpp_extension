@@ -1,6 +1,7 @@
 #pragma once
 #include <filesystem>
 #include <mutex>
+#include <string>
 #include <utility>
 
 #include <torch/csrc/api/include/torch/serialize.h>
@@ -9,7 +10,8 @@
 
 namespace cyy::pytorch {
 
-class synced_tensor_dict : public ::cyy::algorithm::cache<torch::Tensor> {
+class synced_tensor_dict
+    : public ::cyy::algorithm::cache<std::string, torch::Tensor> {
 public:
   explicit synced_tensor_dict(std::filesystem::path storage_dir_);
   ~synced_tensor_dict() override;

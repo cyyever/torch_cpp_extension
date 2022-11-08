@@ -5,7 +5,7 @@
 namespace cyy::pytorch {
 
 class tensor_storage_backend
-    : public ::cyy::algorithm::storage_backend<torch::Tensor> {
+    : public ::cyy::algorithm::storage_backend<std::string, torch::Tensor> {
 public:
   explicit tensor_storage_backend(std::filesystem::path storage_dir_)
       : storage_dir(storage_dir_) {
@@ -67,7 +67,7 @@ private:
 };
 
 synced_tensor_dict::synced_tensor_dict(std::filesystem::path storage_dir_)
-    : cyy::algorithm::cache<torch::Tensor>(
+    : cyy::algorithm::cache<std::string, torch::Tensor>(
           std::make_unique<tensor_storage_backend>(storage_dir_)) {}
 synced_tensor_dict::~synced_tensor_dict() { release(); }
 /* void synced_tensor_dict::set_storage_dir(std::filesystem::path storage_dir) {
