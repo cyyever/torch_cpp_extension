@@ -14,7 +14,7 @@ class synced_tensor_dict
     : public ::cyy::algorithm::lru_cache<std::string, torch::Tensor> {
 public:
   explicit synced_tensor_dict(std::filesystem::path storage_dir_);
-  ~synced_tensor_dict() override;
+  ~synced_tensor_dict() override=default;
   std::string get_storage_dir() const;
 };
 } // namespace cyy::pytorch
