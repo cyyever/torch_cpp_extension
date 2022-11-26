@@ -15,6 +15,7 @@ class synced_tensor_dict
 public:
   explicit synced_tensor_dict(std::filesystem::path storage_dir_);
   ~synced_tensor_dict() override = default;
+  auto get_item(const key_type &key) { return get(key); }
   std::string get_storage_dir() const;
 };
 } // namespace cyy::pytorch

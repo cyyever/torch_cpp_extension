@@ -49,7 +49,7 @@ inline void define_torch_data_structure_extension(py::module_ &m) {
            py::call_guard<py::gil_scoped_release>())
       .def("__contains__", &synced_tensor_dict::contains,
            py::call_guard<py::gil_scoped_release>())
-      .def("__getitem__", &synced_tensor_dict::get,
+      .def("__getitem__", &synced_tensor_dict::get_item,
            py::call_guard<py::gil_scoped_release>())
       .def("__delitem__", &synced_tensor_dict::erase,
            py::call_guard<py::gil_scoped_release>())
