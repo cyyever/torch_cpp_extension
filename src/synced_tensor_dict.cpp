@@ -1,5 +1,6 @@
 #include "synced_tensor_dict.hpp"
 
+#include <shared_mutex>
 #include <stdexcept>
 
 namespace cyy::pytorch {
@@ -19,9 +20,9 @@ public:
       }
     }
   }
-  std::vector<std::string> load_keys() override {
-
+  std::vector<std::string> get_keys() override {
     std::vector<std::string> keys;
+    std::shared_lock lk(data_mutex);
     if (storage_dir.empty()) {
       return keys;
     }
@@ -33,74 +34,60 @@ public:
     }
     return keys;
   }
-  void clear_data() override {
+  bool contains(const key_type &key) override {
+    auto tensor_path = get_tensor_file_path(key);
+    std::shared_lock lk(data_mutex);
+    return std::filesystem::is_regular_file(tensor_path);
+  }
+  void clear() override {
     std::lock_guard lk(data_mutex);
     std::filesystem::remove_all(storage_dir);
     std::filesystem::create_directories(storage_dir);
   }
-  torch::Tensor load_data(const std::string &key) override {
-
-    std::lock_guard lk(data_mutex);
-    torch::Tensor value;
-    torch::load(value, get_tensor_file_path(key).string());
-    return value;
+  std::optional<torch::Tensor> load_data(const std::string &key) override {
+    auto tensor_path = get_tensor_file_path(key);
+    std::shared_lock lk(data_mutex);
+    if (std::filesystem::is_regular_file(tensor_path)) {
+      torch::Tensor value;
+      torch::load(value, tensor_path.string());
+      return value;
+    }
+    return {};
   }
-  void save_data(const std::string &key, torch::Tensor value) override {
 
+  bool save_data(const std::string &key, torch::Tensor value) override {
     std::lock_guard lk(data_mutex);
     auto path = get_tensor_file_path(key);
     std::filesystem::remove(path);
     torch::save(value, path.string());
+    return true;
   }
   void erase_data(const std::string &key) override {
-
     std::lock_guard lk(data_mutex);
     std::filesystem::remove(get_tensor_file_path(key).string());
   }
-  std::filesystem::path get_tensor_file_path(const std::string &key) const;
+
+private:
+  std::filesystem::path get_tensor_file_path(const std::string &key) const {
+    if (storage_dir.empty()) {
+      throw std::runtime_error("storage_dir is empty");
+    }
+    return storage_dir / std::filesystem::path(key);
+  }
 
 public:
   std::filesystem::path storage_dir;
 
 private:
-  std::mutex data_mutex;
+  static inline std::shared_mutex data_mutex;
 };
 
 synced_tensor_dict::synced_tensor_dict(std::filesystem::path storage_dir_)
-    : cyy::algorithm::cache<std::string, torch::Tensor>(
+    : cyy::algorithm::lru_cache<std::string, torch::Tensor>(
           std::make_unique<tensor_storage_backend>(storage_dir_)) {}
-synced_tensor_dict::~synced_tensor_dict() { release(); }
-/* void synced_tensor_dict::set_storage_dir(std::filesystem::path storage_dir) {
- */
-/*   if (storage_dir.empty()) { */
-/*     throw std::invalid_argument(storage_dir.string() + " is not a
- * directory"); */
-/*   } */
-/*   this->flush_all(true); */
-/*   std::lock_guard lk(data_mutex); */
-/*   if (!std::filesystem::exists(storage_dir)) { */
-/*     std::filesystem::create_directories(storage_dir); */
-/*   } else { */
-/*     if (!std::filesystem::is_directory(storage_dir)) { */
-/*       throw std::invalid_argument(storage_dir.string() + " is not a
- * directory"); */
-/*     } */
-/*   } */
-/*   dynamic_cast<tensor_storage_backend &>(*backend).storage_dir = storage_dir;
- */
-/* } */
 
 std::string synced_tensor_dict::get_storage_dir() const {
-  std::lock_guard lk(data_mutex);
   return dynamic_cast<tensor_storage_backend &>(*backend).storage_dir.string();
-}
-
-std::filesystem::path
-tensor_storage_backend::get_tensor_file_path(const std::string &key) const {
-  if (storage_dir.empty()) {
-    throw std::runtime_error("storage_dir is empty");
-  }
-  return storage_dir / std::filesystem::path(key);
 }
 
 } // namespace cyy::pytorch

@@ -43,8 +43,6 @@ inline void define_torch_data_structure_extension(py::module_ &m) {
       .def("set_fetch_thread_number",
            &synced_tensor_dict::set_fetch_thread_number,
            py::call_guard<py::gil_scoped_release>())
-      .def("set_logging", &synced_tensor_dict::set_logging,
-           py::call_guard<py::gil_scoped_release>())
       .def("__setitem__", &synced_tensor_dict::emplace,
            py::call_guard<py::gil_scoped_release>())
       .def("__len__", &synced_tensor_dict::size,
@@ -59,10 +57,8 @@ inline void define_torch_data_structure_extension(py::module_ &m) {
            py::call_guard<py::gil_scoped_release>())
       .def("in_memory_keys", &synced_tensor_dict::in_memory_keys,
            py::call_guard<py::gil_scoped_release>())
-      .def("release", &synced_tensor_dict::release,
-           py::call_guard<py::gil_scoped_release>())
-      .def("__del__", &synced_tensor_dict::release,
-           py::call_guard<py::gil_scoped_release>())
+      /* .def("__del__", &synced_tensor_dict::~synced_tensor_dict, */
+      /*      py::call_guard<py::gil_scoped_release>()) */
       .def("clear", &synced_tensor_dict::clear,
            py::call_guard<py::gil_scoped_release>())
       .def("__copy__",
@@ -75,11 +71,7 @@ inline void define_torch_data_structure_extension(py::module_ &m) {
             return std::runtime_error("deepcopy is not supported");
           },
           py::arg("memo"))
-      .def("flush_all", &synced_tensor_dict::flush_all,
+      .def("flush", &synced_tensor_dict::flush,
            "flush all in-memory data to the disk", py::arg("wait") = true,
-           py::call_guard<py::gil_scoped_release>())
-      .def("flush",
-           static_cast<void (synced_tensor_dict::*)(size_t)>(
-               &synced_tensor_dict::flush),
            py::call_guard<py::gil_scoped_release>());
 }
