@@ -74,8 +74,8 @@ TEST_CASE("synced_tensor_dict") {
     }
     CHECK_EQ(dict.size(), 100);
     dict.enable_permanent_storage();
-    cyy::pytorch::synced_tensor_dict dict2("tensor_dir");
   }
+  cyy::pytorch::synced_tensor_dict dict2("tensor_dir");
   CHECK_EQ(dict2.size(), 100);
   dict2.disable_permanent_storage();
   dict2.clear();
