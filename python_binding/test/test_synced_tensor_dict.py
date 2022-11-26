@@ -1,4 +1,5 @@
 import tempfile
+import os
 
 import cyy_torch_cpp_extension
 import torch
@@ -6,6 +7,7 @@ import torch
 
 def test_synced_tensor_dict():
     with tempfile.TemporaryDirectory() as tmpdir:
+        assert os.path.exists(tmpdir)
         tensor_dict = cyy_torch_cpp_extension.data_structure.SyncedTensorDict(tmpdir)
         tensor_dict.set_in_memory_number(10)
 
@@ -17,4 +19,4 @@ def test_synced_tensor_dict():
         assert str(0) in tensor_dict
         for i in tensor_dict.keys():
             assert tensor_dict[i] == torch.Tensor([int(i)])
-        tensor_dict.release()
+        tensor_dict.flush()
