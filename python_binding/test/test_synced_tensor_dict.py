@@ -1,5 +1,5 @@
-import tempfile
 import os
+import tempfile
 
 import cyy_torch_cpp_extension
 import torch
@@ -20,3 +20,4 @@ def test_synced_tensor_dict():
         for i in tensor_dict.keys():
             assert tensor_dict[i] == torch.Tensor([int(i)])
         tensor_dict.flush()
+        del tensor_dict
