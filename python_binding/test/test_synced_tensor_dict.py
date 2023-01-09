@@ -8,7 +8,9 @@ import torch
 def test_synced_tensor_dict():
     with tempfile.TemporaryDirectory() as tmpdir:
         assert os.path.exists(tmpdir)
-        tensor_dict = cyy_torch_cpp_extension.data_structure.SyncedTensorDict(tmpdir)
+        tensor_dict = cyy_torch_cpp_extension.data_structure.SyncedTensorDictIMPL(
+            tmpdir
+        )
         tensor_dict.set_in_memory_number(10)
 
         # tensor_dict.set_permanent_storage()

@@ -12,7 +12,7 @@ namespace py = pybind11;
 inline void define_torch_data_structure_extension(py::module_ &m) {
   using synced_tensor_dict = ::cyy::pytorch::synced_tensor_dict;
   auto sub_m = m.def_submodule("data_structure", "Contains data structures");
-  py::class_<synced_tensor_dict>(sub_m, "SyncedTensorDict")
+  py::class_<synced_tensor_dict>(sub_m, "SyncedTensorDictIMPL")
       .def(py::init<const std::string &>())
       .def("prefetch",
            static_cast<void (synced_tensor_dict::*)(
@@ -68,7 +68,7 @@ inline void define_torch_data_structure_extension(py::module_ &m) {
       .def(
           "__deepcopy__",
           [](const synced_tensor_dict &, py::dict) {
-            return std::runtime_error("deepcopy is not supported");
+            throw std::runtime_error("deepcopy is not supported");
           },
           py::arg("memo"))
       .def("flush", &synced_tensor_dict::flush,
