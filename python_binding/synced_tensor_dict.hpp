@@ -55,8 +55,6 @@ inline void define_torch_data_structure_extension(py::module_ &m) {
            py::call_guard<py::gil_scoped_release>())
       .def("keys", &synced_tensor_dict::keys,
            py::call_guard<py::gil_scoped_release>())
-      .def("in_memory_keys", &synced_tensor_dict::in_memory_keys,
-           py::call_guard<py::gil_scoped_release>())
       /* .def("__del__", &synced_tensor_dict::~synced_tensor_dict, */
       /*      py::call_guard<py::gil_scoped_release>()) */
       .def("clear", &synced_tensor_dict::clear,
