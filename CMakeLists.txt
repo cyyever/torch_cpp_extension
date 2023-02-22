@@ -32,7 +32,7 @@ file(GLOB_RECURSE SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 find_package(CyyNaiveLib REQUIRED)
 find_package(spdlog REQUIRED)
 
-add_library(CyyTorchExtensionLib ${SOURCE})
+add_library(CyyTorchExtensionLib SHARED ${SOURCE})
 # if(HAS_CUDA) target_compile_definitions(CyyTorchExtensionLib PUBLIC HAS_CUDA)
 # endif()
 target_link_libraries(CyyTorchExtensionLib PRIVATE CyyNaiveLib::log
