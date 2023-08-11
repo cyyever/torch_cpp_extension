@@ -46,7 +46,7 @@ public:
   }
   std::optional<torch::Tensor> load_data(const std::string &key) override {
     auto tensor_path = get_tensor_file_path(key);
-    std::shared_lock lk(data_mutex);
+    std::lock_guard lk(data_mutex);
     if (std::filesystem::is_regular_file(tensor_path)) {
       torch::Tensor value;
       torch::load(value, tensor_path.string());
