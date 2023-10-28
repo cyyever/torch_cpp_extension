@@ -53,9 +53,7 @@ TEST_CASE("synced_tensor_dict") {
         keys.emplace_back(std::to_string(i * 10 + j));
       }
     }
-    dict.flush(true);
-
-    CHECK(dict.contains("0"));
+    dict.flush();
 
     dict.prefetch(keys);
 

@@ -28,15 +28,11 @@ find_package(CyyNaiveLib REQUIRED)
 find_package(spdlog REQUIRED)
 
 add_library(CyyTorchExtensionLib SHARED ${SOURCE})
-target_link_libraries(CyyTorchExtensionLib PRIVATE CyyNaiveLib::util)
+target_link_libraries(CyyTorchExtensionLib PUBLIC CyyNaiveLib::util)
 target_compile_definitions(
   CyyTorchExtensionLib PUBLIC _HAS_FEATURES_REMOVED_IN_CXX20=1
                               _LIBCPP_ENABLE_CXX20_REMOVED_FEATURES)
 get_filename_component(libtorch_dir torch_cpu DIRECTORY)
-if(DEFINED TORCH_LIBRARY)
-  get_filename_component(libtorch_dir "${TORCH_LIBRARY}" DIRECTORY)
-  target_link_directories(CyyTorchExtensionLib PRIVATE "${libtorch_dir}")
-endif()
 target_link_libraries(CyyTorchExtensionLib PUBLIC torch_cpu)
 
 target_include_directories(

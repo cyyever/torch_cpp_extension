@@ -70,6 +70,6 @@ inline void define_torch_data_structure_extension(py::module_ &m) {
           },
           py::arg("memo"))
       .def("flush", &synced_tensor_dict::flush,
-           "flush all in-memory data to the disk", py::arg("wait") = true,
+           "flush all in-memory data to the disk",
            py::call_guard<py::gil_scoped_release>());
 }
