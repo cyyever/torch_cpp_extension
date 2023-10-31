@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.20)
 
 project(CyyTorchExtensionLib LANGUAGES CXX)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 include(cmake/all.cmake)
 
@@ -21,13 +23,17 @@ if(Python3_FOUND)
 endif()
 
 find_package(Torch REQUIRED)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party/naive_cpp_lib)
+set(BUILD_TESTING OFF)
 set(SPDLOG_BUILD_SHARED ON)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party/spdlog)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party/spdlog EXCLUDE_FROM_ALL)
+set(BUILD_OBJECT_LIB ON)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party/naive_cpp_lib EXCLUDE_FROM_ALL)
+set(BUILD_TESTING ON)
 
 file(GLOB_RECURSE SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 add_library(CyyTorchExtensionLib SHARED ${SOURCE})
-target_link_libraries(CyyTorchExtensionLib PUBLIC CyyNaiveLib::util)
+target_link_libraries(CyyTorchExtensionLib PRIVATE CyyNaiveLib::log)
+target_link_libraries(CyyTorchExtensionLib PRIVATE CyyNaiveLib::util)
 target_compile_definitions(
   CyyTorchExtensionLib PUBLIC _HAS_FEATURES_REMOVED_IN_CXX20=1
                               _LIBCPP_ENABLE_CXX20_REMOVED_FEATURES)
