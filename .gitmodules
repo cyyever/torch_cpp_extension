@@ -4,3 +4,6 @@
 [submodule "third_party/algorithm"]
 	path = third_party/algorithm
 	url = git@github.com:cyyever/algorithm.git
+[submodule "third_party/naive_cpp_lib"]
+	path = third_party/naive_cpp_lib
+	url = git@github.com:cyyever/naive_cpp_lib.git

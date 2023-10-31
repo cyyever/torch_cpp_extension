@@ -24,8 +24,9 @@ find_package(Torch REQUIRED)
 
 file(GLOB_RECURSE SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 
-find_package(CyyNaiveLib REQUIRED)
 find_package(spdlog REQUIRED)
+
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party/naive_cpp_lib)
 
 add_library(CyyTorchExtensionLib SHARED ${SOURCE})
 target_link_libraries(CyyTorchExtensionLib PUBLIC CyyNaiveLib::util)
