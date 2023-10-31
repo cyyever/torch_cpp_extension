@@ -21,13 +21,11 @@ if(Python3_FOUND)
 endif()
 
 find_package(Torch REQUIRED)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party/naive_cpp_lib)
+set(SPDLOG_BUILD_SHARED ON)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party/spdlog)
 
 file(GLOB_RECURSE SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
-
-find_package(spdlog REQUIRED)
-
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party/naive_cpp_lib)
-
 add_library(CyyTorchExtensionLib SHARED ${SOURCE})
 target_link_libraries(CyyTorchExtensionLib PUBLIC CyyNaiveLib::util)
 target_compile_definitions(
@@ -41,6 +39,8 @@ target_include_directories(
   PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/third_party/algorithm/src>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/third_party/spdlog/include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/third_party/>
     $<BUILD_INTERFACE:${pytorch_path}/include/torch/csrc/api/include>
     $<BUILD_INTERFACE:${pytorch_path}/include>
     $<INSTALL_INTERFACE:include/cyy/torch>)
