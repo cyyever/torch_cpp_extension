@@ -28,7 +28,6 @@ set(SPDLOG_BUILD_SHARED OFF)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party/spdlog)
 set(BUILD_OBJECT_LIB ON)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party/naive_cpp_lib EXCLUDE_FROM_ALL)
-set(BUILD_TESTING ON)
 
 file(GLOB_RECURSE SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 add_library(CyyTorchExtensionLib SHARED ${SOURCE})
@@ -53,7 +52,9 @@ target_include_directories(
 
 add_subdirectory(python_binding)
 # test
-add_subdirectory(test)
+if(BUILD_TESTING)
+  add_subdirectory(test)
+endif()
 
 option(BUILD_FUZZING "Build fuzzing" OFF)
 if(BUILD_FUZZING)
