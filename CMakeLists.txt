@@ -23,11 +23,15 @@ if(Python3_FOUND)
 endif()
 
 find_package(Torch REQUIRED)
+set(OLD_BUILD_TESTING ${BUILD_TESTING})
 set(BUILD_TESTING OFF)
 set(SPDLOG_BUILD_SHARED OFF)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party/pybind11)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party/spdlog)
 set(BUILD_OBJECT_LIB ON)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party/naive_cpp_lib EXCLUDE_FROM_ALL)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party/naive_cpp_lib
+                 EXCLUDE_FROM_ALL)
+set(BUILD_TESTING "${OLD_BUILD_TESTING}")
 
 file(GLOB_RECURSE SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 add_library(CyyTorchExtensionLib SHARED ${SOURCE})
@@ -45,6 +49,7 @@ target_include_directories(
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/third_party/algorithm/src>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/third_party/spdlog/include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/third_party/pybind11/include>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/third_party/>
     $<BUILD_INTERFACE:${pytorch_path}/include/torch/csrc/api/include>
     $<BUILD_INTERFACE:${pytorch_path}/include>
