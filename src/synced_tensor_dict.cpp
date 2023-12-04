@@ -13,6 +13,7 @@ public:
 
     if (!std::filesystem::exists(storage_dir)) {
       std::filesystem::create_directories(storage_dir);
+      empty_dir=true;
     } else {
       if (!std::filesystem::is_directory(storage_dir)) {
         throw std::invalid_argument(storage_dir.string() +
@@ -77,6 +78,7 @@ private:
 
 public:
   std::filesystem::path storage_dir;
+  bool empty_dir{false};
 
 private:
   static inline std::shared_mutex data_mutex;
@@ -84,7 +86,7 @@ private:
 
 synced_tensor_dict::synced_tensor_dict(std::filesystem::path storage_dir_)
     : cyy::algorithm::lru_cache<std::string, torch::Tensor>(
-          std::make_unique<tensor_storage_backend>(storage_dir_)) {}
+          std::make_unique<tensor_storage_backend>(storage_dir_)) { load_all_keys= dynamic_cast<tensor_storage_backend &>(*backend).empty_dir; }
 
 std::string synced_tensor_dict::get_storage_dir() const {
   return dynamic_cast<tensor_storage_backend &>(*backend).storage_dir.string();
