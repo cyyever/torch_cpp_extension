@@ -21,6 +21,7 @@ public:
       }
     }
   }
+  bool has_initial_keys() const override { return !empty_dir; }
   std::vector<std::string> get_keys() override {
     std::vector<std::string> keys;
     std::shared_lock lk(data_mutex);
@@ -86,9 +87,7 @@ private:
 
 synced_tensor_dict::synced_tensor_dict(std::filesystem::path storage_dir_)
     : cyy::algorithm::lru_cache<std::string, torch::Tensor>(
-          std::make_unique<tensor_storage_backend>(storage_dir_)) {
-  load_all_keys = dynamic_cast<tensor_storage_backend &>(*backend).empty_dir;
-}
+          std::make_unique<tensor_storage_backend>(storage_dir_)) {}
 
 std::string synced_tensor_dict::get_storage_dir() const {
   return dynamic_cast<tensor_storage_backend &>(*backend).storage_dir.string();
