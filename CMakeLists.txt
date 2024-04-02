@@ -26,6 +26,11 @@ find_package(Torch REQUIRED)
 set(OLD_BUILD_TESTING ${BUILD_TESTING})
 set(BUILD_TESTING OFF)
 set(SPDLOG_BUILD_SHARED OFF)
+add_compile_definitions(
+  _HAS_FEATURES_REMOVED_IN_CXX20=1 _SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS
+  _SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING
+  _LIBCPP_ENABLE_CXX20_REMOVED_FEATURES)
+add_compile_options(/wd4996)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party/pybind11)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party/spdlog)
 set(BUILD_OBJECT_LIB ON)
@@ -38,8 +43,11 @@ add_library(CyyTorchExtensionLib SHARED ${SOURCE})
 target_link_libraries(CyyTorchExtensionLib PRIVATE CyyNaiveLib::log)
 target_link_libraries(CyyTorchExtensionLib PRIVATE CyyNaiveLib::util)
 target_compile_definitions(
-  CyyTorchExtensionLib PUBLIC _HAS_FEATURES_REMOVED_IN_CXX20=1
-                              _LIBCPP_ENABLE_CXX20_REMOVED_FEATURES)
+  CyyTorchExtensionLib
+  PUBLIC _HAS_FEATURES_REMOVED_IN_CXX20=1
+         _SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS
+         _SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING
+         _LIBCPP_ENABLE_CXX20_REMOVED_FEATURES)
 get_filename_component(libtorch_dir torch_cpu DIRECTORY)
 target_link_libraries(CyyTorchExtensionLib PUBLIC torch_cpu)
 

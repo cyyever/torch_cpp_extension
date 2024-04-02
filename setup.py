@@ -1,5 +1,6 @@
 # Available at setup time due to pyproject.toml
 import os
+import platform
 import subprocess
 import sys
 from pathlib import Path
@@ -23,7 +24,7 @@ class CMakeExtension(Extension):
 
 class CMakeBuild(build_ext):
     def build_extension(self, ext: CMakeExtension) -> None:
-        if which("vswhere") is not None:
+        if platform.system() == "Windows" and which("vswhere") is not None:
             vs_path = subprocess.check_output(
                 ["vswhere", "-latest", "-prerelease", "-property", "installationPath"]
             )
@@ -60,8 +61,11 @@ class CMakeBuild(build_ext):
         cmake_args = [
             f"-DCMAKE_LIBRARY_OUTPUT_DIRECTORY={extdir}{os.sep}",
             f"-DPYTHON_EXECUTABLE={sys.executable}",
+            "-DCMAKE_BUILD_TYPE=Release"
         ]
         build_args = []
+        if platform.system() == "Windows":
+            build_args += ["--config", "release"]
         # Adding CMake arguments set as environment variable
         # (needed e.g. to build for ARM OSx on conda-forge)
         if "CMAKE_ARGS" in os.environ:
