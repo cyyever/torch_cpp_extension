@@ -3,6 +3,7 @@ import os
 import subprocess
 import sys
 from pathlib import Path
+from shutil import which
 
 import ninja
 from setuptools import Extension, setup
@@ -22,6 +23,30 @@ class CMakeExtension(Extension):
 
 class CMakeBuild(build_ext):
     def build_extension(self, ext: CMakeExtension) -> None:
+        if which("vswhere") is not None:
+            vs_path = subprocess.check_output(
+                ["vswhere", "-latest", "-prerelease", "-property", "installationPath"]
+            )
+            if not vs_path:
+                vs_path = subprocess.check_output(
+                    ["vswhere", "-property", "installationPath"]
+                )
+            if vs_path:
+                vs_path = Path(vs_path.decode().strip())
+                old_cwd = Path.cwd()
+                os.chdir(os.path.join(vs_path, "VC", "Auxiliary", "Build"))
+                vs_environ = subprocess.check_output(
+                    ["cmd.exe", "/c", "call vcvarsall.bat x64 && set"]
+                )
+                if vs_environ:
+                    for env in vs_environ.decode().splitlines():
+                        env = env.strip()
+                        if "=" in env:
+                            elements = env.split("=")
+                            if len(elements) == 2:
+                                os.environ[elements[0]] = elements[1]
+                os.chdir(old_cwd)
+
         # Must be in this form due to bug in .resolve() only fixed in Python 3.10+
         ext_fullpath = Path.cwd() / self.get_ext_fullpath(ext.name)
         extdir = ext_fullpath.parent.resolve()
