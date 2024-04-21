@@ -30,7 +30,9 @@ add_compile_definitions(
   _HAS_FEATURES_REMOVED_IN_CXX20=1 _SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS
   _SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING
   _LIBCPP_ENABLE_CXX20_REMOVED_FEATURES)
-add_compile_options(/wd4996)
+if(MSVC)
+  add_compile_options(/wd4996)
+endif()
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party/pybind11)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party/spdlog)
 set(BUILD_OBJECT_LIB ON)
