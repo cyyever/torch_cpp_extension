@@ -2,6 +2,7 @@
 
 #include <shared_mutex>
 #include <stdexcept>
+#include <vector>
 
 namespace cyy::pytorch {
 
