@@ -46,9 +46,9 @@ if(BUILD_PYTHON_EXT)
   add_library(CyyTorchExtensionLib OBJECT ${SOURCE})
 else()
   add_library(CyyTorchExtensionLib SHARED ${SOURCE})
-  target_link_libraries(CyyTorchExtensionLib PUBLIC CyyNaiveLib::log)
-  target_link_libraries(CyyTorchExtensionLib PUBLIC CyyNaiveLib::util)
 endif()
+target_link_libraries(CyyTorchExtensionLib PRIVATE CyyNaiveLib::log)
+target_link_libraries(CyyTorchExtensionLib PRIVATE CyyNaiveLib::util)
 target_compile_definitions(
   CyyTorchExtensionLib
   PUBLIC _HAS_FEATURES_REMOVED_IN_CXX20=1
