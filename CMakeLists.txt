@@ -3,7 +3,6 @@ cmake_minimum_required(VERSION 3.20)
 project(CyyTorchExtensionLib LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-set(CMAKE_INSTALL_RPATH_USE_LINK_PATH ON)
 option(BUILD_PYTHON_EXT "Build python extension" OFF)
 
 include(cmake/all.cmake)
@@ -57,7 +56,12 @@ target_compile_definitions(
          _SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING
          _LIBCPP_ENABLE_CXX20_REMOVED_FEATURES)
 get_filename_component(libtorch_dir torch_cpu DIRECTORY)
-target_link_libraries(CyyTorchExtensionLib PUBLIC torch_cpu)
+set_target_properties(
+  CyyTorchExtensionLib
+  PROPERTIES INSTALL_RPATH "${libtorch_dir}"
+             target_link_libraries (
+             CyyTorchExtensionLib PUBLIC
+             torch_cpu)
 
 target_include_directories(
   CyyTorchExtensionLib
