@@ -56,12 +56,9 @@ target_compile_definitions(
          _SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING
          _LIBCPP_ENABLE_CXX20_REMOVED_FEATURES)
 get_filename_component(libtorch_dir torch_cpu DIRECTORY)
-set_target_properties(
-  CyyTorchExtensionLib
-  PROPERTIES INSTALL_RPATH "${libtorch_dir}"
-             target_link_libraries (
-             CyyTorchExtensionLib PUBLIC
-             torch_cpu)
+set_target_properties(CyyTorchExtensionLib PROPERTIES INSTALL_RPATH
+                                                      "${libtorch_dir}")
+target_link_libraries(CyyTorchExtensionLib PUBLIC torch_cpu)
 
 target_include_directories(
   CyyTorchExtensionLib
