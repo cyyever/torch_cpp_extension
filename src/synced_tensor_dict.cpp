@@ -10,7 +10,7 @@ class tensor_storage_backend
     : public ::cyy::algorithm::storage_backend<std::string, torch::Tensor> {
 public:
   explicit tensor_storage_backend(std::filesystem::path storage_dir_)
-      : storage_dir(storage_dir_) {
+      : storage_dir(std::move(storage_dir_)) {
 
     if (!std::filesystem::exists(storage_dir)) {
       std::filesystem::create_directories(storage_dir);
@@ -62,7 +62,7 @@ public:
     std::lock_guard lk(data_mutex);
     auto path = get_tensor_file_path(key);
     std::filesystem::remove(path);
-    torch::save(value, path.string());
+    torch::save(value.clone(), path.string());
     return true;
   }
   void erase_data(const std::string &key) override {
@@ -86,7 +86,7 @@ private:
   static inline std::shared_mutex data_mutex;
 };
 
-synced_tensor_dict::synced_tensor_dict(std::filesystem::path storage_dir_)
+synced_tensor_dict::synced_tensor_dict(const std::filesystem::path& storage_dir_)
     : cyy::algorithm::lru_cache<std::string, torch::Tensor>(
           std::make_unique<tensor_storage_backend>(storage_dir_)) {}
 
